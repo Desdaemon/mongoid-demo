@@ -1,10 +1,10 @@
-# typed: false
+# typed: true
 class PostsController < ApplicationController
   before_action :set_post, only: %i[show update destroy]
 
   # GET /posts
   def index
-    @posts = Post.all
+    @posts = Post.asc(:asd).descending(:asd).to_a
     render json: @posts
   end
 
@@ -16,9 +16,10 @@ class PostsController < ApplicationController
   # POST /posts
   def create
     @post = Post.new post_params
+    @post = Post.find_by! name: 'asd'
 
     if @post.save
-      render json: @post, status: :created, location: @post
+      render json: @post, status: :created
     else
       render json: @post.errors, status: :unprocessable_entity
     end
@@ -42,10 +43,13 @@ class PostsController < ApplicationController
 
   # Use callbacks to share common setup or constraints between actions.
   def set_post
-    @post = Post.in?(params[:id])
+    @post = T.unsafe Post.find params[:id]
+  rescue Mongoid::Errors::DocumentNotFound => e
+    render status: :not_found, plain: e.message
   end
 
   # Only allow a trusted parameter "white list" through.
+  sig {returns T::Hash[T.untyped, T.untyped]}
   def post_params
     params.require(:post).permit(:title, :body)
   end
