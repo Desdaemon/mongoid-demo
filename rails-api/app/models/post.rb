@@ -1,4 +1,4 @@
-# typed: false
+# typed: true
 
 class Post
   include Mongoid::Document
