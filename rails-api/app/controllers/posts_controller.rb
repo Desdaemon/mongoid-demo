@@ -9,9 +9,7 @@ class PostsController < ApplicationController
 
   # GET /posts/1
   def show
-    post = Post.new
-    post
-      .render json: @post
+    render json: @post
   end
 
   # POST /posts
