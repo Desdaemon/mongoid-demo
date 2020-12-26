@@ -1,4 +1,5 @@
 # typed: strict
+#
 # Re-exports several methods that were not provided when including
 # [`Mongoid::Document`](https://docs.mongodb.com/mongoid/master/api/Mongoid/Document.html)for Solargraph and other code-completion tools.
 # Note that you still need to manually include [`Mongoid::Document`](https://docs.mongodb.com/mongoid/master/api/Mongoid/Document.html) and other modules.
@@ -44,4 +45,7 @@ module ModelBase
   #   @param args [String, Hash] The javascript or standard selection.
   #   @return [Mongoid::Criteria] The cloned selectable.
   #   @raise [UnsupportedJavascript] If provided a string and the criteria is embedded.
+
+  # @!method field(name, **kwargs)
+  #   @param name [Symbol]
 end

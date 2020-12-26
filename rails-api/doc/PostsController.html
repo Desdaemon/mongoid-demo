@@ -103,7 +103,17 @@
   
 </div>
 
+<h2>Overview</h2><div class="docstring">
+  <div class="discussion">
+    <p>typed: false</p>
 
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div>
 
 
 
@@ -366,13 +376,13 @@
       <pre class="lines">
 
 
-5
 6
 7
-8</pre>
+8
+9</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/controllers/posts_controller.rb', line 5</span>
+      <pre class="code"><span class="info file"># File 'app/controllers/posts_controller.rb', line 6</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_index'>index</span>
   <span class='ivar'>@posts</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="Post.html" title="Post (class)">Post</a></span></span><span class='period'>.</span><span class='id identifier rubyid_all'>all</span>
@@ -408,16 +418,14 @@
       <pre class="lines">
 
 
-11
 12
 13
 14</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/controllers/posts_controller.rb', line 11</span>
+      <pre class="code"><span class="info file"># File 'app/controllers/posts_controller.rb', line 12</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_show'>show</span>
-  <span class='ivar'>@post</span><span class='period'>.</span><span class='id identifier rubyid_setBody'>setBody</span>
   <span class='id identifier rubyid_render'>render</span> <span class='label'>json:</span> <span class='ivar'>@post</span>
 <span class='kw'>end</span></pre>
     </td>
@@ -478,7 +486,7 @@
 </div>
 
       <div id="footer">
-  Generated on Thu Dec 24 00:40:50 2020 by
+  Generated on Sat Dec 26 11:25:19 2020 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.25 (ruby-2.6.6).
 </div>
