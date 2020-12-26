@@ -1,3 +1,4 @@
+# typed: false
 class Comment
   include Mongoid::Document
   field :name, type: String
