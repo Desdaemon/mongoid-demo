@@ -4,7 +4,7 @@ class PostsController < ApplicationController
 
   # GET /posts
   def index
-    @posts = Post.asc(:asd).descending(:asd).to_a
+    @posts = Post.all
     render json: @posts
   end
 

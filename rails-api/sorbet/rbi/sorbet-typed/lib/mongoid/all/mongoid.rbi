@@ -200,9 +200,9 @@ module Mongoid
       def callback_executable?(kind); end
       sig { params(kind: Symbol).returns(T::Boolean) }
       def in_callback_state?(kind); end
-      sig { params(kinds: T::Array[Symbol]).returns(Object) }
+      sig { params(kinds: Symbol).returns(Object) }
       def run_after_callbacks(*kinds); end
-      sig { params(kinds: T::Array[Symbol]).returns(Object) }
+      sig { params(kinds: Symbol).returns(Object) }
       def run_before_callbacks(*kinds); end
       sig { params(kind: Symbol, args: T::Array[T.untyped], block: T.untyped).returns(Document) }
       def run_callbacks(kind, *args, &block); end
@@ -351,7 +351,7 @@ module Mongoid
       def reload_relations; end
       sig { params(name: T.any(String, Symbol)).returns(Association) }
       def reflect_on_association(name); end
-      sig { params(macros: T::Array[Symbol]).returns(T::Array[Association]) }
+      sig { params(macros: Symbol).returns(T::Array[Association]) }
       def reflect_on_all_association(*macros); end
       sig { returns(T::Hash[T.untyped, T.untyped]) }
       def associations; end
