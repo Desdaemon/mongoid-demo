@@ -160,8 +160,8 @@ module Mongoid
       def identity; end
       sig { params(attrs: T.nilable(T::Hash[T.untyped, T.untyped])).void }
       def initialize(attrs = nil); end
-      sig { params(args: T.untyped).returns(String) }
-      def model_name(*args); end
+      sig { returns(String) }
+      def model_name; end
       sig { returns(String) }
       def to_key; end
       sig { returns(T::Array[Document]) }
@@ -447,7 +447,7 @@ module Mongoid
       def persist_or_delay_atomic_operation(operation); end
       sig { params(operations: T::Hash[T.untyped, T.untyped]).returns(T.untyped) }
       def persist_atomic_operations(operations); end
-      sig { params(fields: T::Array[T.any(String, Symbol)]).returns(Document) }
+      sig { params(fields: T.any(String, Symbol)).returns(Document) }
       def unset(*fields); end
       sig { params(options: T::Hash[T.untyped, T.untyped]).returns(T::Boolean) }
       def upsert(options = {}); end
@@ -1503,10 +1503,10 @@ module Mongoid
     include Mongoid::Clients::Sessions
     include Mongoid::Criteria::Options
     CHECK = T.let([], T.untyped)
-    sig { params(args: T.untyped).returns(T.untyped) }
-    def _enumerable_find(*args); end
-    sig { params(args: T.untyped).returns(T.untyped) }
-    def _findable_find(*args); end
+    sig { returns(T.untyped) }
+    def _enumerable_find; end
+    sig { returns(T.untyped) }
+    def _findable_find; end
     sig { params(other: Object).returns(T::Boolean) }
     def ==(other); end
     sig { params(args: T.untyped, block: T.untyped).returns(T.nilable(T.any(Document, T::Array[Document]))) }
@@ -1693,9 +1693,9 @@ module Mongoid
     def max_time_ms(value = nil); end
     sig { returns(Criteria) }
     def no_timeout; end
-    sig { params(spec: T.any(String, T::Array[Object], T::Hash[T.untyped, T.untyped])).returns(Criteria) }
+    sig { params(spec: T.any(T::Array[T.untyped], T::Hash[T.untyped, T.untyped], String)).returns(Criteria) }
     def order_by(*spec); end
-    sig { params(spec: T.any(String, T::Array[Object], T::Hash[T.untyped, T.untyped])).returns(Criteria) }
+    sig { params(spec: T.any(T::Array[T.untyped], T::Hash[T.untyped, T.untyped], String)).returns(Criteria) }
     def reorder(*spec); end
     sig { params(value: T.nilable(Integer)).returns(Criteria) }
     def skip(value = nil); end
@@ -1711,9 +1711,9 @@ module Mongoid
     def collation(collation_doc); end
     sig { params(options: T::Hash[T.untyped, T.untyped], field: String, direction: Integer).returns(Criteria) }
     def add_sort_option(options, field, direction); end
-    sig { params(args: T::Array[T.untyped]).returns(Queryable) }
+    sig { params(args: T.untyped).returns(Criteria) }
     def option(*args); end
-    sig { params(fields: T::Array[String], direction: Integer).returns(Criteria) }
+    sig { params(fields: String, direction: Integer).returns(Criteria) }
     def sort_with_list(*fields, direction); end
     sig { returns(T::Hash[T.untyped, T.untyped]) }
     def atomic_selector; end
@@ -1723,13 +1723,13 @@ module Mongoid
     def root_atomic_selector; end
     sig { returns(T::Boolean) }
     def aggregating?; end
-    sig { params(operation: T::Hash[T.untyped, T.untyped]).returns(Aggregable) }
+    sig { params(operation: T::Hash[T.untyped, T.untyped]).returns(Criteria) }
     def group(operation); end
-    sig { params(operation: T.nilable(T::Hash[T.untyped, T.untyped])).returns(Aggregable) }
+    sig { params(operation: T.nilable(T::Hash[T.untyped, T.untyped])).returns(Criteria) }
     def project(operation = nil); end
-    sig { params(field: T.any(String, Symbol)).returns(Aggregable) }
+    sig { params(field: T.any(String, Symbol)).returns(Criteria) }
     def unwind(field); end
-    sig { params(operation: T::Hash[T.untyped, T.untyped]).returns(Aggregable) }
+    sig { params(operation: T::Hash[T.untyped, T.untyped]).returns(Criteria) }
     def aggregation(operation); end
     sig { returns(Mergeable) }
     def intersect; end
@@ -1739,15 +1739,15 @@ module Mongoid
     def union; end
     sig { returns(Criteria) }
     def reset_strategies!; end
-    sig { params(criterion: T::Hash[T.untyped, T.untyped], operator: String).returns(Mergeable) }
+    sig { params(criterion: T::Hash[T.untyped, T.untyped], operator: String).returns(Criteria) }
     def __add__(criterion, operator); end
-    sig { params(criterion: T::Hash[T.untyped, T.untyped], outer: String, inner: String).returns(Mergeable) }
+    sig { params(criterion: T::Hash[T.untyped, T.untyped], outer: String, inner: String).returns(Criteria) }
     def __expanded__(criterion, outer, inner); end
-    sig { params(criterion: T::Hash[T.untyped, T.untyped]).returns(Mergeable) }
+    sig { params(criterion: T::Hash[T.untyped, T.untyped]).returns(Criteria) }
     def __merge__(criterion); end
-    sig { params(criterion: T::Hash[T.untyped, T.untyped], operator: String).returns(Mergeable) }
+    sig { params(criterion: T::Hash[T.untyped, T.untyped], operator: String).returns(Criteria) }
     def __intersect__(criterion, operator); end
-    sig { params(criteria: T::Array[T.any(T::Hash[T.untyped, T.untyped], Criteria)], operator: String).returns(Mergeable) }
+    sig { params(criteria: T::Array[T.any(T::Hash[T.untyped, T.untyped], Criteria)], operator: String).returns(Criteria) }
     def __multi__(criteria, operator); end
     sig { params(operator: T.untyped, criteria: T.untyped).returns(T.untyped) }
     def _mongoid_add_top_level_operation(operator, criteria); end
@@ -1755,13 +1755,13 @@ module Mongoid
     def _mongoid_flatten_arrays(array); end
     sig { params(expr: T::Hash[T.untyped, T.untyped]).returns(T::Hash[T.untyped, T.untyped]) }
     def _mongoid_expand_keys(expr); end
-    sig { params(criterion: T.any(T::Hash[T.untyped, T.untyped], Criteria), operator: String).returns(Mergeable) }
+    sig { params(criterion: T.any(T::Hash[T.untyped, T.untyped], Criteria), operator: String).returns(Criteria) }
     def __override__(criterion, operator); end
-    sig { params(criterion: T::Hash[T.untyped, T.untyped], operator: String).returns(Mergeable) }
+    sig { params(criterion: T::Hash[T.untyped, T.untyped], operator: String).returns(Criteria) }
     def __union__(criterion, operator); end
-    sig { params(strategy: Symbol).returns(Mergeable) }
+    sig { params(strategy: Symbol).returns(Criteria) }
     def use(strategy); end
-    sig { params(strategy: Symbol, criterion: Object, operator: String).returns(Mergeable) }
+    sig { params(strategy: Symbol, criterion: Object, operator: String).returns(Criteria) }
     def with_strategy(strategy, criterion, operator); end
     sig { params(field: String, operator: T.untyped, value: Object).returns(Object) }
     def prepare(field, operator, value); end
@@ -1802,7 +1802,7 @@ module Mongoid
     module Findable
       sig { params(ids: Object, multi: T::Boolean).returns(T.any(Document, T::Array[Document])) }
       def execute_or_raise(ids, multi); end
-      sig { params(args: T::Array[BSON::ObjectId]).returns(T.any(T::Array[Document], Document)) }
+      sig { params(args: BSON::ObjectId).returns(T.any(T::Array[Document], Document)) }
       def find(*args); end
       sig { params(ids: T::Array[T.untyped]).returns(Criteria) }
       def for_ids(ids); end
@@ -1854,47 +1854,47 @@ module Mongoid
       def initialize(aliases = {}, serializers = {}, driver = :mongo); end
       sig { params(other: Queryable).returns(T.untyped) }
       def initialize_copy(other); end
-      sig { params(fields: T::Array[Symbol]).returns(Optional) }
+      sig { params(fields: Symbol).returns(Criteria) }
       def ascending(*fields); end
-      sig { params(value: T.nilable(Integer)).returns(Optional) }
+      sig { params(value: T.nilable(Integer)).returns(Criteria) }
       def batch_size(value = nil); end
-      sig { params(fields: T::Array[Symbol]).returns(Optional) }
+      sig { params(fields: Symbol).returns(Criteria) }
       def descending(*fields); end
-      sig { params(value: T.nilable(T::Hash[T.untyped, T.untyped])).returns(Optional) }
+      sig { params(value: T.nilable(T::Hash[T.untyped, T.untyped])).returns(Criteria) }
       def hint(value = nil); end
-      sig { params(value: T.nilable(Integer)).returns(Optional) }
+      sig { params(value: T.nilable(Integer)).returns(Criteria) }
       def limit(value = nil); end
-      sig { params(value: T.nilable(Integer)).returns(Optional) }
+      sig { params(value: T.nilable(Integer)).returns(Criteria) }
       def max_scan(value = nil); end
-      sig { params(value: T.nilable(Integer)).returns(Optional) }
+      sig { params(value: T.nilable(Integer)).returns(Criteria) }
       def max_time_ms(value = nil); end
-      sig { returns(Optional) }
+      sig { returns(Criteria) }
       def no_timeout; end
-      sig { params(args: T::Array[Symbol]).returns(Optional) }
+      sig { params(args: Symbol).returns(Criteria) }
       def only(*args); end
-      sig { params(spec: T.any(T::Array[T.untyped], T::Hash[T.untyped, T.untyped], String)).returns(Optional) }
+      sig { params(spec: T.any(T::Array[T.untyped], T::Hash[T.untyped, T.untyped], String, Object)).returns(Criteria) }
       def order_by(*spec); end
-      sig { params(spec: T.any(T::Array[T.untyped], T::Hash[T.untyped, T.untyped], String)).returns(Optional) }
+      sig { params(spec: T.any(T::Array[T.untyped], T::Hash[T.untyped, T.untyped], String, Object)).returns(Criteria) }
       def reorder(*spec); end
-      sig { params(value: T.nilable(Integer)).returns(Optional) }
+      sig { params(value: T.nilable(Integer)).returns(Criteria) }
       def skip(value = nil); end
-      sig { params(criterion: T.nilable(T::Hash[T.untyped, T.untyped])).returns(Optional) }
+      sig { params(criterion: T.nilable(T::Hash[T.untyped, T.untyped])).returns(Criteria) }
       def slice(criterion = nil); end
-      sig { returns(Optional) }
+      sig { returns(Criteria) }
       def snapshot; end
-      sig { params(args: T::Array[Symbol]).returns(Optional) }
+      sig { params(args: Symbol).returns(Criteria) }
       def without(*args); end
-      sig { params(comment: T.nilable(String)).returns(Optional) }
+      sig { params(comment: T.nilable(String)).returns(Criteria) }
       def comment(comment = nil); end
-      sig { params(type: Symbol).returns(Optional) }
+      sig { params(type: Symbol).returns(Criteria) }
       def cursor_type(type); end
-      sig { params(collation_doc: T::Hash[T.untyped, T.untyped]).returns(Optional) }
+      sig { params(collation_doc: T::Hash[T.untyped, T.untyped]).returns(Criteria) }
       def collation(collation_doc); end
-      sig { params(options: T::Hash[T.untyped, T.untyped], field: String, direction: Integer).returns(Optional) }
+      sig { params(options: T::Hash[T.untyped, T.untyped], field: String, direction: Integer).returns(Criteria) }
       def add_sort_option(options, field, direction); end
       sig { params(args: T::Array[T.untyped]).returns(Queryable) }
       def option(*args); end
-      sig { params(fields: T::Array[String], direction: Integer).returns(Optional) }
+      sig { params(fields: String, direction: Integer).returns(Criteria) }
       def sort_with_list(*fields, direction); end
       sig { returns(T::Hash[T.untyped, T.untyped]) }
       def atomic_selector; end
@@ -2038,47 +2038,47 @@ module Mongoid
       end
       module Optional
         extend Mongoid::Criteria::Queryable::Macroable
-        sig { params(fields: T::Array[Symbol]).returns(Optional) }
+        sig { params(fields: Symbol).returns(Criteria) }
         def ascending(*fields); end
-        sig { params(value: T.nilable(Integer)).returns(Optional) }
+        sig { params(value: T.nilable(Integer)).returns(Criteria) }
         def batch_size(value = nil); end
-        sig { params(fields: T::Array[Symbol]).returns(Optional) }
+        sig { params(fields: Symbol).returns(Criteria) }
         def descending(*fields); end
-        sig { params(value: T.nilable(T::Hash[T.untyped, T.untyped])).returns(Optional) }
+        sig { params(value: T.nilable(T::Hash[T.untyped, T.untyped])).returns(Criteria) }
         def hint(value = nil); end
-        sig { params(value: T.nilable(Integer)).returns(Optional) }
+        sig { params(value: T.nilable(Integer)).returns(Criteria) }
         def limit(value = nil); end
-        sig { params(value: T.nilable(Integer)).returns(Optional) }
+        sig { params(value: T.nilable(Integer)).returns(Criteria) }
         def max_scan(value = nil); end
-        sig { params(value: T.nilable(Integer)).returns(Optional) }
+        sig { params(value: T.nilable(Integer)).returns(Criteria) }
         def max_time_ms(value = nil); end
-        sig { returns(Optional) }
+        sig { returns(Criteria) }
         def no_timeout; end
-        sig { params(args: T::Array[Symbol]).returns(Optional) }
+        sig { params(args: Symbol).returns(Criteria) }
         def only(*args); end
-        sig { params(spec: T.any(T::Array[T.untyped], T::Hash[T.untyped, T.untyped], String)).returns(Optional) }
+        sig { params(spec: T.any(T::Array[T.untyped], T::Hash[T.untyped, T.untyped], String)).returns(Criteria) }
         def order_by(*spec); end
-        sig { params(spec: T.any(T::Array[T.untyped], T::Hash[T.untyped, T.untyped], String)).returns(Optional) }
+        sig { params(spec: T.any(T::Array[T.untyped], T::Hash[T.untyped, T.untyped], String)).returns(Criteria) }
         def reorder(*spec); end
-        sig { params(value: T.nilable(Integer)).returns(Optional) }
+        sig { params(value: T.nilable(Integer)).returns(Criteria) }
         def skip(value = nil); end
-        sig { params(criterion: T.nilable(T::Hash[T.untyped, T.untyped])).returns(Optional) }
+        sig { params(criterion: T.nilable(T::Hash[T.untyped, T.untyped])).returns(Criteria) }
         def slice(criterion = nil); end
-        sig { returns(Optional) }
+        sig { returns(Criteria) }
         def snapshot; end
-        sig { params(args: T::Array[Symbol]).returns(Optional) }
+        sig { params(args: Symbol).returns(Criteria) }
         def without(*args); end
-        sig { params(comment: T.nilable(String)).returns(Optional) }
+        sig { params(comment: T.nilable(String)).returns(Criteria) }
         def comment(comment = nil); end
-        sig { params(type: Symbol).returns(Optional) }
+        sig { params(type: Symbol).returns(Criteria) }
         def cursor_type(type); end
-        sig { params(collation_doc: T::Hash[T.untyped, T.untyped]).returns(Optional) }
+        sig { params(collation_doc: T::Hash[T.untyped, T.untyped]).returns(Criteria) }
         def collation(collation_doc); end
-        sig { params(options: T::Hash[T.untyped, T.untyped], field: String, direction: Integer).returns(Optional) }
+        sig { params(options: T::Hash[T.untyped, T.untyped], field: String, direction: Integer).returns(Criteria) }
         def add_sort_option(options, field, direction); end
         sig { params(args: T::Array[T.untyped]).returns(Queryable) }
         def option(*args); end
-        sig { params(fields: T::Array[String], direction: Integer).returns(Optional) }
+        sig { params(fields: String, direction: Integer).returns(Criteria) }
         def sort_with_list(*fields, direction); end
         sig { returns(T::Array[Symbol]) }
         def self.forwardables; end
@@ -2231,7 +2231,7 @@ module Mongoid
         POLYGON = T.let("Polygon", T.untyped)
         sig { params(criteria: T::Hash[T.untyped, T.untyped]).returns(Selectable) }
         def all(*criteria); end
-        sig { params(criteria: T::Array[T.any(T::Hash[T.untyped, T.untyped], Criteria)]).returns(Selectable) }
+        sig { params(criteria: T.any(T::Hash[T.untyped, T.untyped], Criteria)).returns(Selectable) }
         def and(*criteria); end
         sig { params(criterion: T::Hash[T.untyped, T.untyped]).returns(Selectable) }
         def between(criterion); end
@@ -2265,11 +2265,11 @@ module Mongoid
         def near_sphere(criterion); end
         sig { params(condition: T::Hash[T.untyped, T.untyped]).returns(Selectable) }
         def nin(condition); end
-        sig { params(criteria: T::Array[T.any(T::Hash[T.untyped, T.untyped], Criteria)]).returns(Selectable) }
+        sig { params(criteria: T.any(T::Hash[T.untyped, T.untyped], Criteria)).returns(Selectable) }
         def nor(*criteria); end
         sig { returns(T::Boolean) }
         def negating?; end
-        sig { params(criteria: T::Array[T.any(T::Hash[T.untyped, T.untyped], Criteria)]).returns(Selectable) }
+        sig { params(criteria: T.any(T::Hash[T.untyped, T.untyped], Criteria)).returns(Selectable) }
         def not(*criteria); end
         sig { params(criteria: T.any(T::Hash[T.untyped, T.untyped], Criteria, T::Array[T.any(T::Hash[T.untyped, T.untyped], Criteria)])).returns(Selectable) }
         def or(*criteria); end
@@ -2548,7 +2548,7 @@ module Mongoid
       end
     end
     module Includable
-      sig { params(relations: T.any(T::Array[Symbol], T::Array[T::Hash[T.untyped, T.untyped]])).returns(Criteria) }
+      sig { params(relations: T.any(Symbol, T::Hash[T.untyped, T.untyped])).returns(Criteria) }
       def includes(*relations); end
       sig { returns(T::Array[Association]) }
       def inclusions; end
@@ -2612,7 +2612,6 @@ module Mongoid
     include Mongoid::Composable
     include Mongoid::Touchable::InstanceMethods
     extend ActiveSupport::Concern
-
     ILLEGAL_KEY = T.let(/(\A[$])|(\.)/.freeze, T.untyped)
     MODULES = T.let([
   Atomic,
@@ -2777,9 +2776,9 @@ module Mongoid
     def callback_executable?(kind); end
     sig { params(kind: Symbol).returns(T::Boolean) }
     def in_callback_state?(kind); end
-    sig { params(kinds: T::Array[Symbol]).returns(Object) }
+    sig { params(kinds: Symbol).returns(Object) }
     def run_after_callbacks(*kinds); end
-    sig { params(kinds: T::Array[Symbol]).returns(Object) }
+    sig { params(kinds: Symbol).returns(Object) }
     def run_before_callbacks(*kinds); end
     sig { params(kind: Symbol, args: T::Array[T.untyped], block: T.untyped).returns(Document) }
     def run_callbacks(kind, *args, &block); end
@@ -2928,7 +2927,7 @@ module Mongoid
     def reload_relations; end
     sig { params(name: T.any(String, Symbol)).returns(Association) }
     def reflect_on_association(name); end
-    sig { params(macros: T::Array[Symbol]).returns(T::Array[Association]) }
+    sig { params(macros: Symbol).returns(T::Array[Association]) }
     def reflect_on_all_association(*macros); end
     sig { returns(T::Hash[T.untyped, T.untyped]) }
     def associations; end
@@ -3024,7 +3023,7 @@ module Mongoid
     def persist_or_delay_atomic_operation(operation); end
     sig { params(operations: T::Hash[T.untyped, T.untyped]).returns(T.untyped) }
     def persist_atomic_operations(operations); end
-    sig { params(fields: T::Array[T.any(String, Symbol)]).returns(Document) }
+    sig { params(fields: T.any(String, Symbol)).returns(Document) }
     def unset(*fields); end
     sig { params(options: T::Hash[T.untyped, T.untyped]).returns(T::Boolean) }
     def upsert(options = {}); end
@@ -3313,7 +3312,6 @@ module Mongoid
   end
   module Findable
     extend Forwardable
-    
     sig { returns(Integer) }
     def count; end
     sig { returns(Integer) }
@@ -3322,15 +3320,15 @@ module Mongoid
     def empty?; end
     sig { returns(T::Boolean) }
     def exists?; end
-    sig { params(args: T.any(Object, T::Array[Object])).returns(T.nilable(T.any(T.self_type, T::Array[Document]))) }
+    sig { params(args: T.any(Object, T::Array[Object])).returns(T.nilable(T.any(Document, T::Array[Document]))) }
     def find(*args); end
-    sig { params(attrs: T::Hash[T.untyped, T.untyped]).returns(T.nilable(T.self_type)) }
+    sig { params(attrs: T::Hash[T.untyped, T.untyped]).returns(T.nilable(Document)) }
     def find_by(attrs = {}); end
     sig { params(attrs: T::Hash[T.untyped, T.untyped]).returns(Document) }
     def find_by!(attrs = {}); end
-    sig { returns(T.self_type) }
+    sig { returns(Document) }
     def first; end
-    sig { returns(T.self_type) }
+    sig { returns(Document) }
     def last; end
   end
   module Loggable
@@ -3741,7 +3739,7 @@ end, T.untyped)
         REJECT_ALL_BLANK_PROC = T.let(->(attributes){
   attributes.all? { |key, value| key == '_destroy' || value.blank? }
 }, T.untyped)
-        sig { params(args: T.any(T::Array[Symbol], T::Hash[T.untyped, T.untyped])).returns(T.untyped) }
+        sig { params(args: T.any(Symbol, T::Hash[T.untyped, T.untyped])).returns(T.untyped) }
         def accepts_nested_attributes_for(*args); end
         sig { params(association: Association).returns(T.untyped) }
         def autosave_nested_attributes(association); end
@@ -3775,7 +3773,7 @@ end, T.untyped)
       sig { params(name: T.untyped).returns(T::Boolean) }
       def projected_field?(name); end
       module ClassMethods
-        sig { params(names: T::Array[Symbol]).returns(T.untyped) }
+        sig { params(names: Symbol).returns(T.untyped) }
         def attr_readonly(*names); end
       end
     end
@@ -4019,9 +4017,9 @@ end, T.untyped)
     def callback_executable?(kind); end
     sig { params(kind: Symbol).returns(T::Boolean) }
     def in_callback_state?(kind); end
-    sig { params(kinds: T::Array[Symbol]).returns(Object) }
+    sig { params(kinds: Symbol).returns(Object) }
     def run_after_callbacks(*kinds); end
-    sig { params(kinds: T::Array[Symbol]).returns(Object) }
+    sig { params(kinds: Symbol).returns(Object) }
     def run_before_callbacks(*kinds); end
     sig { params(kind: Symbol, args: T::Array[T.untyped], block: T.untyped).returns(Document) }
     def run_callbacks(kind, *args, &block); end
@@ -4170,7 +4168,7 @@ end, T.untyped)
     def reload_relations; end
     sig { params(name: T.any(String, Symbol)).returns(Association) }
     def reflect_on_association(name); end
-    sig { params(macros: T::Array[Symbol]).returns(T::Array[Association]) }
+    sig { params(macros: Symbol).returns(T::Array[Association]) }
     def reflect_on_all_association(*macros); end
     sig { returns(T::Hash[T.untyped, T.untyped]) }
     def associations; end
@@ -4266,7 +4264,7 @@ end, T.untyped)
     def persist_or_delay_atomic_operation(operation); end
     sig { params(operations: T::Hash[T.untyped, T.untyped]).returns(T.untyped) }
     def persist_atomic_operations(operations); end
-    sig { params(fields: T::Array[T.any(String, Symbol)]).returns(Document) }
+    sig { params(fields: T.any(String, Symbol)).returns(Document) }
     def unset(*fields); end
     sig { params(options: T::Hash[T.untyped, T.untyped]).returns(T::Boolean) }
     def upsert(options = {}); end
@@ -5134,7 +5132,7 @@ end, T.untyped)
     def reload_relations; end
     sig { params(name: T.any(String, Symbol)).returns(Association) }
     def reflect_on_association(name); end
-    sig { params(macros: T::Array[Symbol]).returns(T::Array[Association]) }
+    sig { params(macros: Symbol).returns(T::Array[Association]) }
     def reflect_on_all_association(*macros); end
     sig { returns(T::Hash[T.untyped, T.untyped]) }
     def associations; end
@@ -5744,12 +5742,12 @@ end, T.untyped)
       extend ActiveSupport::Concern
       sig { params(name: T.any(String, Symbol)).returns(Association) }
       def reflect_on_association(name); end
-      sig { params(macros: T::Array[Symbol]).returns(T::Array[Association]) }
+      sig { params(macros: Symbol).returns(T::Array[Association]) }
       def reflect_on_all_association(*macros); end
       module ClassMethods
         sig { params(name: T.any(String, Symbol)).returns(Association) }
         def reflect_on_association(name); end
-        sig { params(macros: T::Array[Symbol]).returns(T::Array[Association]) }
+        sig { params(macros: Symbol).returns(T::Array[Association]) }
         def reflect_on_all_associations(*macros); end
       end
     end
@@ -6646,7 +6644,7 @@ end, T.untyped)
           def destroy_all(conditions = {}); end
           sig { returns(T::Boolean) }
           def exists?; end
-          sig { params(args: T::Array[Object]).returns(T.any(T::Array[Document], Document)) }
+          sig { params(args: Object).returns(T.any(T::Array[Document], Document)) }
           def find(*args); end
           sig { params(base: Document, target: T::Array[Document], association: Association).void }
           def initialize(base, target, association); end
@@ -8287,7 +8285,7 @@ end, T.untyped)
     def persist_or_delay_atomic_operation(operation); end
     sig { params(operations: T::Hash[T.untyped, T.untyped]).returns(T.untyped) }
     def persist_atomic_operations(operations); end
-    sig { params(fields: T::Array[T.any(String, Symbol)]).returns(Document) }
+    sig { params(fields: T.any(String, Symbol)).returns(Document) }
     def unset(*fields); end
     sig { params(options: T::Hash[T.untyped, T.untyped]).returns(T::Boolean) }
     def upsert(options = {}); end
@@ -8459,7 +8457,7 @@ end, T.untyped)
     end
     module Unsettable
       extend ActiveSupport::Concern
-      sig { params(fields: T::Array[T.any(String, Symbol)]).returns(Document) }
+      sig { params(fields: T.any(String, Symbol)).returns(Document) }
       def unset(*fields); end
     end
     module Upsertable
@@ -8597,7 +8595,7 @@ end, T.untyped)
     module ClassMethods
       sig { params(association: Association).returns(T.untyped) }
       def validates_relation(association); end
-      sig { params(args: T.any(T::Array[Class], T::Hash[T.untyped, T.untyped]), block: T.untyped).returns(T.untyped) }
+      sig { params(args: T.any(Class, T::Hash[T.untyped, T.untyped]), block: T.untyped).returns(T.untyped) }
       def validates_with(*args, &block); end
       sig { returns(T::Boolean) }
       def validating_with_query?; end
@@ -8737,9 +8735,9 @@ end, T.untyped)
     def callback_executable?(kind); end
     sig { params(kind: Symbol).returns(T::Boolean) }
     def in_callback_state?(kind); end
-    sig { params(kinds: T::Array[Symbol]).returns(Object) }
+    sig { params(kinds: Symbol).returns(Object) }
     def run_after_callbacks(*kinds); end
-    sig { params(kinds: T::Array[Symbol]).returns(Object) }
+    sig { params(kinds: Symbol).returns(Object) }
     def run_before_callbacks(*kinds); end
     sig { params(kind: Symbol, args: T::Array[T.untyped], block: T.untyped).returns(Document) }
     def run_callbacks(kind, *args, &block); end
