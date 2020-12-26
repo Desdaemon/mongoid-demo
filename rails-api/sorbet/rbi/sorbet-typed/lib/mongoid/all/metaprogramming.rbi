@@ -31,13 +31,18 @@ module Mongoid::Document::ClassMethods
   def offset(value = T.unsafe(nil)); end
   sig {params(args: Symbol).returns Mongoid::Criteria}
   def only(*args); end
-  def options; end
-  def options=(_arg0); end
+  sig {params(spec: Object).returns Mongoid::Criteria}
   def order(*spec); end
+  sig {params(spec: Object).returns Mongoid::Criteria}
   def order_by(*spec); end
+  sig {params(spec: Object).returns Mongoid::Criteria}
   def reorder(*spec); end
+  sig {params(value: T.nilable(Integer)).returns Mongoid::Criteria}
   def skip(value = T.unsafe(nil)); end
+  sig {params(criterion: T.nilable(T::Hash[T.untyped, T.untyped])).returns Mongoid::Criteria}
   def slice(criterion = T.unsafe(nil)); end
+  sig { returns(Mongoid::Criteria) }
   def snapshot; end
+  sig { params(args: Symbol).returns(Mongoid::Criteria) }
   def without(*args); end
 end

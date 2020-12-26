@@ -1503,10 +1503,10 @@ module Mongoid
     include Mongoid::Clients::Sessions
     include Mongoid::Criteria::Options
     CHECK = T.let([], T.untyped)
-    sig { returns(T.untyped) }
-    def _enumerable_find; end
-    sig { returns(T.untyped) }
-    def _findable_find; end
+    sig { params(args: T.untyped).returns(T.untyped) }
+    def _enumerable_find(*args); end
+    sig { params(args: T.untyped).returns(T.untyped) }
+    def _findable_find(*args); end
     sig { params(other: Object).returns(T::Boolean) }
     def ==(other); end
     sig { params(args: T.untyped, block: T.untyped).returns(T.nilable(T.any(Document, T::Array[Document]))) }

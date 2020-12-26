@@ -16,7 +16,6 @@ class PostsController < ApplicationController
   # POST /posts
   def create
     @post = Post.new post_params
-    @post = Post.find_by! name: 'asd'
 
     if @post.save
       render json: @post, status: :created
@@ -43,7 +42,7 @@ class PostsController < ApplicationController
 
   # Use callbacks to share common setup or constraints between actions.
   def set_post
-    @post = T.unsafe Post.find params[:id]
+    @post = Post.find params[:id]
   rescue Mongoid::Errors::DocumentNotFound => e
     render status: :not_found, plain: e.message
   end
