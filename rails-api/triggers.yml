@@ -1,0 +1,6 @@
+triggers:
+  field: macros/field_plugin.rb
+  has_many: macros/has_many_plugin.rb
+  has_one: macros/has_one_plugin.rb
+  belongs_to: macros/belongs_to_plugin.rb
+  has_and_belongs_to_many: macros/has_and_belongs_to_many_plugin.rb

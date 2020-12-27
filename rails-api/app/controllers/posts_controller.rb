@@ -1,4 +1,4 @@
-# typed: true
+# typed: false
 class PostsController < ApplicationController
   before_action :set_post, only: %i[show update destroy]
 
@@ -48,7 +48,6 @@ class PostsController < ApplicationController
   end
 
   # Only allow a trusted parameter "white list" through.
-  sig {returns T::Hash[T.untyped, T.untyped]}
   def post_params
     params.require(:post).permit(:title, :body)
   end

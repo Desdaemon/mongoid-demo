@@ -1,0 +1,10 @@
+{
+  "filewatcher.commands": [
+    {
+      "match": "app/models",
+      "isAsync": true,
+      "cmd": "bundle exec srb t --print plugin-generated-code --dsl-plugins triggers.yml > sorbet/rbi/macro-output.rbi",
+      "event": "onFolderChange"
+    }
+  ]
+}

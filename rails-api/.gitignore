@@ -19,3 +19,5 @@
 /config/master.key
 
 /config/mongoid.yml
+/sorbet/rbi/sorbet-typed
+/sorbet/rbi/gems

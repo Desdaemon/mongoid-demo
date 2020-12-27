@@ -1,10 +1,15 @@
-# typed: true
+# typed: false
 class CommentsController < ApplicationController
-  before_action :set_comment, only: [:show, :update, :destroy]
+  before_action :set_comment, only: %i[show update destroy]
+  def initialize
+    @comments = T.let [], T::Array[Comment]
+    @comment = T.let (T.unsafe nil), Comment
+    super
+  end
 
   # GET /comments
   def index
-    @comments = Comment.all
+    @comments = Comment.all.to_a
 
     render json: @comments
   end
@@ -40,13 +45,16 @@ class CommentsController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_comment
-      @comment = Comment.find(params[:id])
-    end
 
-    # Only allow a trusted parameter "white list" through.
-    def comment_params
-      params.require(:comment).permit(:name, :message, :post_id)
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_comment
+    @comment = T.unsafe Comment.find(params[:id])
+  rescue Mongoid::Errors::DocumentNotFound
+    render status: :not_found
+  end
+
+  # Only allow a trusted parameter "white list" through.
+  def comment_params
+    params.require(:comment).permit(:name, :message, :post_id)
+  end
 end
