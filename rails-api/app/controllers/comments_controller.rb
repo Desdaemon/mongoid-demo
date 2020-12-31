@@ -1,4 +1,4 @@
-# typed: false
+# typed: true
 class CommentsController < ApplicationController
   before_action :set_comment, only: %i[show update destroy]
   def initialize

@@ -1,6 +1,12 @@
-# typed: false
+# typed: true
 class PostsController < ApplicationController
   before_action :set_post, only: %i[show update destroy]
+
+  def initialize
+    @post = T.let (T.unsafe nil), Post
+    @posts = T.let [], T::Array[Post]
+    super
+  end
 
   # GET /posts
   def index
@@ -42,7 +48,7 @@ class PostsController < ApplicationController
 
   # Use callbacks to share common setup or constraints between actions.
   def set_post
-    @post = Post.find params[:id]
+    @post = T.unsafe Post.find params[:id]
   rescue Mongoid::Errors::DocumentNotFound => e
     render status: :not_found, plain: e.message
   end

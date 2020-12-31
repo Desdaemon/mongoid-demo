@@ -49,7 +49,11 @@ module Mongoid::Document::ClassMethods
   include Mongoid::Fields::ClassMethods
   include Mongoid::Association::Macros::ClassMethods
   include Mongoid::Scopable::ClassMethods
+  include Mongoid::Indexable::ClassMethods
   include Mongoid::Findable
+  include Mongoid::Persistable::Creatable::ClassMethods
+  include Mongoid::Persistable::Deletable::ClassMethods
+  include Mongoid::Persistable::Destroyable::ClassMethods
 end
 
 module Mongoid::Document
