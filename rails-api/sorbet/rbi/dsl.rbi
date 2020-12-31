@@ -53,3 +53,11 @@ class Post;
   sig{params(hero: Post).returns Post}
   attr_writer :hero
 end;
+# Path: "./app/models/post.rb//plugin-generated|6.rbi":
+class Post;
+# typed: strict
+  sig{returns Mongoid::Criteria}
+  def asd(); end
+  sig{returns Mongoid::Criteria}
+  def self.asd(); end
+end;

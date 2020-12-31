@@ -1,5 +1,5 @@
 # typed: strict
-class Comment
+class Comment < Mongoid::GlobalDiscriminatorKeyAssignment::InvalidFieldHost
   include Mongoid::Document
 
   field :name, type: String

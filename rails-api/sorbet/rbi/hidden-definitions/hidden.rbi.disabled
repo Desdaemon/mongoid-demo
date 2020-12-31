@@ -18815,9 +18815,9 @@ class Post
 
   def hero?(); end
 
-  def id(); end
+  # def id(); end
 
-  def id=(value); end
+  # def id=(value); end
 
   def include_root_in_json(); end
 

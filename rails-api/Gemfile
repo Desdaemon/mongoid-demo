@@ -31,7 +31,7 @@ group :development do
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
   # gem "dry-inflector", "~> 0.2.0"
-  gem 'sorbet', '0.5.6189'
+  gem 'sorbet'
   gem 'tapioca', require: false
 end
 
@@ -39,4 +39,4 @@ end
 gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]
 
 gem 'dry-inflector', '~> 0.2.0'
-gem 'sorbet-runtime', '0.5.6189'
+gem 'sorbet-runtime'

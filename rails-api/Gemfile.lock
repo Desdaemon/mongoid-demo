@@ -194,8 +194,8 @@ DEPENDENCIES
   mongoid (~> 7.2.0)
   puma (~> 3.11)
   rails (~> 6.0.0)
-  sorbet (= 0.5.6189)
-  sorbet-runtime (= 0.5.6189)
+  sorbet
+  sorbet-runtime
   spring
   spring-watcher-listen (~> 2.0.0)
   tapioca

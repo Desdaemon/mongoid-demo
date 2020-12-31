@@ -10,5 +10,42 @@
 # See https://docs.rubocop.org/rubocop/configuration
 AllCops:
   Exclude:
-    - "**/*.rbi"
+    - "sorbet/rbi/dsl.rbi"
+    - "sorbet/rbi/mongoid.rbi"
   NewCops: enable
+
+Layout/EmptyLineBetweenDefs:
+  Exclude:
+    - "**/*.rbi"
+
+Style/Documentation:
+  Exclude:
+    - "**/*.rbi"
+
+Style/ClassAndModuleChildren:
+  Exclude:
+    - "**/*.rbi"
+
+Lint/MissingSuper:
+  Exclude:
+    - "**/*.rbi"
+
+Naming/FileName:
+  Exclude:
+    - "**/*.rbi"
+
+Style/MissingRespondToMissing:
+  Exclude:
+    - "**/*.rbi"
+
+Naming/AccessorMethodName:
+  Exclude:
+    - "**/*.rbi"
+
+Naming/PredicateName:
+  Exclude:
+    - "**/*.rbi"
+
+Naming/MethodParameterName:
+  Exclude:
+    - "**/*.rbi"
