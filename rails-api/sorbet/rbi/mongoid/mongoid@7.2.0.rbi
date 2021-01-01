@@ -1,4 +1,4 @@
-# typed: strong
+# typed: true
 
 class BSON::Document < ::Hash
   def initialize(elements = T.unsafe(nil)); end
@@ -22,8 +22,8 @@ class BSON::Document < ::Hash
 
   private
 
-  def convert_key(key); end
-  def convert_value(value); end
+  # def convert_key(key); end
+  # def convert_value(value); end
 end
 
 class BSON::ObjectId
@@ -51,9 +51,9 @@ class BSON::ObjectId
 
   private
 
-  def generate_data; end
-  def initialize_copy(other); end
-  def repair; end
+  # def generate_data; end
+  # def initialize_copy(other); end
+  # def repair; end
 
   class << self
     sig {params(buffer: T.untyped, options: T::Hash[T.untyped, T.untyped]).returns BSON::ObjectId}
@@ -163,14 +163,20 @@ module Mongoid::Association
 
   mixes_in_class_methods(::Mongoid::Association::Referenced::Syncable::ClassMethods)
 
-  def _association; end
-  def _association=(_arg0); end
+  attr_accessor :_association
+  sig {returns Symbol}
   def association_name; end
+  sig { returns(T::Boolean) }
   def embedded?; end
+  sig { returns(T::Boolean) }
   def embedded_many?; end
+  sig { returns(T::Boolean) }
   def embedded_one?; end
+  sig { returns(T::Boolean) }
   def referenced_many?; end
+  sig { returns(T::Boolean) }
   def referenced_one?; end
+  sig { returns(T::Hash[T.untyped, T.untyped]) }
   def reload_relations; end
 end
 
@@ -184,12 +190,12 @@ module Mongoid::Association::Accessors
 
   private
 
-  def _mongoid_filter_selected_fields(assoc_key); end
-  def get_relation(name, association, object, reload = T.unsafe(nil)); end
-  def needs_no_database_query?(object, association); end
-  def parse_args(*args); end
-  def without_autobuild; end
-  def without_autobuild?; end
+  # def _mongoid_filter_selected_fields(assoc_key); end
+  # def get_relation(name, association, object, reload = T.unsafe(nil)); end
+  # def needs_no_database_query?(object, association); end
+  # def parse_args(*args); end
+  # def without_autobuild; end
+  # def without_autobuild?; end
 
   class << self
     def define_builder!(association); end
@@ -215,15 +221,15 @@ module Mongoid::Association::Bindable
 
   private
 
-  def bind_foreign_key(keyed, id); end
-  def bind_from_relational_parent(doc); end
-  def bind_inverse(doc, inverse); end
-  def bind_polymorphic_inverse_type(typed, name); end
-  def bind_polymorphic_type(typed, name); end
-  def check_inverse!(doc); end
-  def record_id(_base); end
-  def set_base_association; end
-  def unbind_from_relational_parent(doc); end
+  # def bind_foreign_key(keyed, id); end
+  # def bind_from_relational_parent(doc); end
+  # def bind_inverse(doc, inverse); end
+  # def bind_polymorphic_inverse_type(typed, name); end
+  # def bind_polymorphic_type(typed, name); end
+  # def check_inverse!(doc); end
+  # def record_id(_base); end
+  # def set_base_association; end
+  # def unbind_from_relational_parent(doc); end
 end
 
 module Mongoid::Association::Builders
@@ -231,7 +237,7 @@ module Mongoid::Association::Builders
 
   private
 
-  def parse_args(*args); end
+  # def parse_args(*args); end
 
   class << self
     def define_builder!(association); end
@@ -244,7 +250,7 @@ module Mongoid::Association::Constrainable
 
   private
 
-  def convert_polymorphic(object); end
+  # def convert_polymorphic(object); end
 end
 
 module Mongoid::Association::Depending
@@ -256,11 +262,11 @@ module Mongoid::Association::Depending
 
   private
 
-  def _dependent_delete_all!(association); end
-  def _dependent_destroy!(association); end
-  def _dependent_nullify!(association); end
-  def _dependent_restrict_with_error!(association); end
-  def _dependent_restrict_with_exception!(association); end
+  # def _dependent_delete_all!(association); end
+  # def _dependent_destroy!(association); end
+  # def _dependent_nullify!(association); end
+  # def _dependent_restrict_with_error!(association); end
+  # def _dependent_restrict_with_exception!(association); end
 
   class << self
     def define_dependency!(association); end
@@ -286,26 +292,50 @@ end
 module Mongoid::Association::Embedded::Batchable
   include(::Mongoid::Positional)
 
+  # Clear all of the docs out of the association in a single swipe.
+  sig { params(docs: T::Array[Mongoid::Document]).returns([]) }
   def batch_clear(docs); end
+  # Insert new documents as a batch push ($push with $each).
+  # This ensures that all callbacks are run at the appropriate
+  # time and only 1 request is made to the database.
+  sig { params(docs: T::Array[Mongoid::Document]).returns(T::Array[T::Hash[T.untyped, T.untyped]]) }
   def batch_insert(docs); end
-  def batch_remove(docs, method = T.unsafe(nil)); end
+  # Batch remove the provided documents as a $pullAll.
+  #
+  # `method` is either `:delete` (default) or `:destroy`.
+  sig { params(docs: T::Array[Mongoid::Document], method: Symbol).void }
+  def batch_remove(docs, method = :delete); end
+  # Batch replace the provided documents as a $set.
+  sig { params(docs: T::Array[Mongoid::Document]).returns(T::Array[T::Hash[T.untyped, T.untyped]]) }
   def batch_replace(docs); end
 
   private
 
+  sig { params(sets: T::Array[T::Hash[T.untyped, T.untyped]]).returns(T.untyped) }
   def add_atomic_sets(sets); end
-  def execute_batch_push(docs); end
+  sig { params(docs: T::Array[Mongoid::Document]).returns(T::Array[T::Hash[T.untyped, T.untyped]]) }
   def execute_batch_set(docs); end
+  sig { params(docs: T::Array[Mongoid::Document]).returns(T::Array[T::Hash[T.untyped, T.untyped]]) }
+  def execute_batch_push(docs); end
+  sig { returns(T::Boolean) }
   def insertable?; end
+  sig { returns(T::Boolean) }
   def inserts_valid; end
+  sig { params(value: T::Boolean).returns(T::Boolean) }
   def inserts_valid=(value); end
+  sig { params(docs: T::Array[T.any(T::Hash[T.untyped, T.untyped], Mongoid::Document)]).returns(T::Array[Mongoid::Document]) }
   def normalize_docs(docs); end
-  def path; end
-  def path=(value); end
+  sig { returns(String) }
+  attr_accessor :path
+  sig { params(docs: T::Array[Mongoid::Document]).returns(T::Enumerable[T.untyped]) }
   def post_process_batch_insert(docs); end
+  sig { params(docs: T::Array[Mongoid::Document], method: Symbol).returns(T::Array[Mongoid::Document]) }
   def post_process_batch_remove(docs, method); end
+  sig { params(docs: T::Array[Mongoid::Document]).returns(T::Array[T::Hash[T.untyped, T.untyped]]) }
   def pre_process_batch_insert(docs); end
+  sig { params(docs: T::Array[Mongoid::Document], method: Symbol).returns(T::Array[T::Hash[T.untyped, T.untyped]]) }
   def pre_process_batch_remove(docs, method); end
+  sig { returns(T::Hash[T.untyped, T.untyped]) }
   def selector; end
 end
 
@@ -316,7 +346,17 @@ module Mongoid::Association::Embedded::Cyclic
 end
 
 module Mongoid::Association::Embedded::Cyclic::ClassMethods
+  # Create a cyclic embedded association that creates a tree
+  # hierarchy for the document and many embedded child documents.
+  #
+  # This provides the default nomenclature for accessing
+  # a parent document or its children.
   def recursively_embeds_many(options = T.unsafe(nil)); end
+  # Create a cyclic embedded association that creates a single
+  # self referencing relationship for a parent and a single child.
+  #
+  # This provides the default nomenclature for accessing
+  # a parent document or its children.
   def recursively_embeds_one(options = T.unsafe(nil)); end
 
   private
@@ -332,22 +372,31 @@ class Mongoid::Association::Embedded::EmbeddedIn
   include(::Mongoid::Threaded::Lifecycle)
   include(::Mongoid::Association::Embedded::EmbeddedIn::Buildable)
 
+  sig { returns TrueClass }
   def embedded?; end
+  sig {returns String}
   def key; end
+  sig { params(attributes: T::Hash[T.untyped, T.untyped], options: T::Hash[T.untyped, T.untyped]).returns(Mongoid::Association::Nested::One) }
   def nested_builder(attributes, options); end
+  sig { returns(T::Boolean) }
   def polymorphic?; end
+  sig {returns NilClass}
   def primary_key; end
+  sig {returns Proxy}
   def relation; end
+  sig { returns(T.self_type) }
   def setup!; end
+  sig { returns FalseClass }      
   def stores_foreign_key?; end
+  sig {returns FalseClass}
   def validation_default; end
 
   private
 
-  def determine_inverses(other); end
-  def polymorphic_inverses(other = T.unsafe(nil)); end
-  def relation_complements; end
-  def setup_instance_methods!; end
+  # def determine_inverses(other); end
+  # def polymorphic_inverses(other = T.unsafe(nil)); end
+  # def relation_complements; end
+  # def setup_instance_methods!; end
 end
 
 Mongoid::Association::Embedded::EmbeddedIn::ASSOCIATION_OPTIONS = T.let(T.unsafe(nil), T::Array[T.untyped])
@@ -364,19 +413,33 @@ module Mongoid::Association::Embedded::EmbeddedIn::Buildable
   include(::Mongoid::Threaded::Lifecycle)
   extend(::Mongoid::Threaded::Lifecycle::ClassMethods)
 
+  # This builder doesn't actually build anything, just returns
+  # the parent since it should already be instantiated.
   def build(base, object, type = T.unsafe(nil), selected_fields = T.unsafe(nil)); end
 end
 
 class Mongoid::Association::Embedded::EmbeddedIn::Proxy < ::Mongoid::Association::One
+  # Instantiate a new `embedded_in` association.
+  sig { params(base: Mongoid::Document, target: Mongoid::Document, association: Mongoid::Association).void }
   def initialize(base, target, association); end
 
+  # Substitutes the supplied target documents
+  # for the existing document in the association.
+  #
+  # **Examples**
+  #
+  # *Substitute the new document*
+  # ```
+  # person.name.substitute(new_name)
+  # ```
+  sig { params(replacement: T.self_type).returns(T.nilable(T.self_type)) }
   def substitute(replacement); end
 
   private
 
-  def binding; end
-  def characterize_one(document); end
-  def persistable?; end
+  # def binding; end
+  # def characterize_one(document); end
+  # def persistable?; end
 
   class << self
     def embedded?; end
@@ -384,7 +447,7 @@ class Mongoid::Association::Embedded::EmbeddedIn::Proxy < ::Mongoid::Association
   end
 end
 
-Mongoid::Association::Embedded::EmbeddedIn::VALID_OPTIONS = T.let(T.unsafe(nil), T::Array[T.untyped])
+Mongoid::Association::Embedded::EmbeddedIn::VALID_OPTIONS = T.let(T.unsafe(nil), T::Array[Symbol])
 
 class Mongoid::Association::Embedded::EmbedsMany
   include(::Mongoid::Association::Constrainable)
@@ -393,27 +456,40 @@ class Mongoid::Association::Embedded::EmbedsMany
   include(::Mongoid::Threaded::Lifecycle)
   include(::Mongoid::Association::Embedded::EmbedsMany::Buildable)
 
+  sig { params(base: Mongoid::Document, target: Mongoid::Document).returns(T.untyped) }
   def criteria(base, target); end
+  sig {returns TrueClass}
   def embedded?; end
+  sig {returns String}
   def key; end
+  sig { params(attributes: T::Hash[T.untyped, T.untyped], options: T::Hash[T.untyped, T.untyped]).returns(Mongoid::Association::Nested::Many) }
   def nested_builder(attributes, options); end
+  sig { params(document: Mongoid::Document).returns(Mongoid::Atomic::Paths::Embedded::Many) }
   def path(document); end
+  sig { returns(T::Boolean) }
   def polymorphic?; end
+  sig {returns NilClass}
   def primary_key; end
+  sig { returns(Proxy) }
   def relation; end
+  sig { returns(T.self_type) }
   def setup!; end
+  sig { returns(String) }
   def store_as; end
+  sig {returns FalseClass}
   def stores_foreign_key?; end
+  sig { returns(T.nilable(String)) }
   def type; end
+  sig {returns TrueClass}
   def validation_default; end
 
   private
 
-  def apply_ordering(criteria); end
-  def determine_inverses(other); end
-  def polymorphic_inverses(other = T.unsafe(nil)); end
-  def relation_complements; end
-  def setup_instance_methods!; end
+  # def apply_ordering(criteria); end
+  # def determine_inverses(other); end
+  # def polymorphic_inverses(other = T.unsafe(nil)); end
+  # def relation_complements; end
+  # def setup_instance_methods!; end
 end
 
 Mongoid::Association::Embedded::EmbedsMany::ASSOCIATION_OPTIONS = T.let(T.unsafe(nil), T::Array[T.untyped])
@@ -430,6 +506,18 @@ module Mongoid::Association::Embedded::EmbedsMany::Buildable
   include(::Mongoid::Threaded::Lifecycle)
   extend(::Mongoid::Threaded::Lifecycle::ClassMethods)
 
+  # Builds the document out of the attributes using the provided
+  # association metadata. Instantiates through the factory in order to
+  # make sure subclasses and allocation are used if fitting.
+  # This case will return many documents.
+  sig do
+    params(
+      base: Object,
+      object: Object,
+      type: T.nilable(String),
+      selected_fields: T.nilable(T::Hash[T.untyped, T.untyped])
+    ).returns(T::Array[Mongoid::Document])
+  end
   def build(base, object, type = T.unsafe(nil), selected_fields = T.unsafe(nil)); end
 end
 
@@ -437,44 +525,126 @@ class Mongoid::Association::Embedded::EmbedsMany::Proxy < ::Mongoid::Association
   include(::Mongoid::Positional)
   include(::Mongoid::Association::Embedded::Batchable)
 
+  # Instantiate a new `embeds_many` association.
+  sig { params(base: Mongoid::Document, target: T::Array[Mongoid::Document], association: Mongoid::Association).void }
   def initialize(base, target, association); end
-
+  # Appends a document or array of documents to the association.
+  # Will set the parent and update the index in the process.
+  sig { params(args: T.any(Mongoid::Document, T::Array[Mongoid::Document])).returns(T.self_type) }
   def <<(*args); end
+  # Get this association as as its representation in the database.
+  sig { returns(T::Array[T::Hash[T.untyped, T.untyped]]) }
   def as_document; end
-  def build(attributes = T.unsafe(nil), type = T.unsafe(nil)); end
+  # Builds a new document in the association and appends
+  # it to the target. Takes an optional type if you want
+  # to specify a subclass.
+  sig do
+    params(
+      attributes: T::Hash[T.untyped, T.untyped],
+      type: T.nilable(Class),
+      block: T.nilable(T.proc.params(a: Mongoid::Document).void)
+    ).returns(Mongoid::Document)
+  end
+  def build(attributes = {}, type = nil, &block); end
+  # Clear the association. Will delete the documents from
+  # the database if they are already persisted.
+  sig { returns(T.self_type) }
   def clear; end
+  # Appends an array of documents to the association.
+  # Performs a batch insert of the documents instead of
+  # persisting one at a time.
+  sig { params(docs: T::Array[Mongoid::Document]).returns(T::Array[Mongoid::Document]) }
   def concat(docs); end
+  # Returns a count of the number of documents in the association
+  # that have actually been persisted to the database.
+  #
+  # Use `Proxy#size` if you want the total number of documents.
+  sig { returns(Integer) }
   def count; end
+  # Delete the supplied document from the target.
+  # This method is proxied in order to reindex the array
+  # after the operation occurs.
+  sig { params(document: Mongoid::Document).returns(T.nilable(Mongoid::Document)) }
   def delete(document); end
-  def delete_all(conditions = T.unsafe(nil)); end
-  def delete_if; end
-  def destroy_all(conditions = T.unsafe(nil)); end
+  # Delete all the documents in the association without
+  # running callbacks. Returns the number of documents deleted.
+  sig { params(conditions: T::Hash[T.untyped, T.untyped]).returns(Integer) }
+  def delete_all(conditions = {}); end
+  # Delete all the documents for which the provided block returns true.
+  # Returns the association, or an enumerator if no block was provided.
+  #
+  # **Examples**
+  # ```
+  # person.addresses.delete_if do |doc|
+  #   doc.state == 'GA'
+  # end
+  # ```
+  sig do
+    params(block: T.nilable(T.proc.params(d: Mongoid::Document).returns(T::Boolean))).
+    returns(T.any(Mongoid::Association::Many, T::Enumerator[Mongoid::Document]))
+  end
+  def delete_if(&block); end
+  # Destroy all the documents in the association whilst running callbacks.
+  # Returns the number of documents destroyed.
+  sig { params(conditions: T::Hash[T.untyped, T.untyped]).returns(Integer) }
+  def destroy_all(conditions = {}); end
+  # Determine if any documents in this association exist in the database.
+  sig { returns(T::Boolean) }
   def exists?; end
+  # Finds a document in this association through
+  # several different methods.
+  sig { params(args: Object).returns(T.any(T::Array[Mongoid::Document], Mongoid::Document)) }
   def find(*args); end
+  # Get all the documents in the association
+  # that are loaded into memory.
+  sig { returns(T::Array[Mongoid::Document]) }
   def in_memory; end
-  def new(attributes = T.unsafe(nil), type = T.unsafe(nil)); end
-  def pop(count = T.unsafe(nil)); end
-  def push(*args); end
-  def shift(count = T.unsafe(nil)); end
+  # Builds a new document in the association and appends
+  # it to the target. Takes an optional type if you want
+  # to specify a subclass.
+  sig do
+    params(
+      attributes: T::Hash[T.untyped, T.untyped],
+      type: T.nilable(Class),
+      block: T.nilable(T.proc.params(a: Mongoid::Document).void)
+    ).returns(Mongoid::Document)
+  end
+  def new(attributes = {}, type = nil, &block); end
+  # Pop documents off the association. This can be a
+  # single document or multiples, and will automatically
+  # persist the changes.
+  sig { params(count: T.nilable(Integer)).returns(T.any(Mongoid::Document, T::Array[Mongoid::Document])) }
+  def pop(count = nil); end
+  # Shift documents off the association. This can be a
+  # single document or multiples, and will automatically
+  # persist the changes.
+  sig { params(count: T.nilable(Integer)).returns(T.any(Mongoid::Document, T::Array[Mongoid::Document])) }
+  def shift(count = nil); end
+  # Substitutes the supplied target documents for the
+  # existing documents in the relation.
+  sig { params(docs: T::Array[Mongoid::Document]).returns(Mongoid::Association::Many) }
   def substitute(docs); end
+  # Return the association with all previous scoping removed.
+  # This is the exact representation of the docs in the database.
+  sig { returns(Mongoid::Criteria) }
   def unscoped; end
 
   private
 
-  def _unscoped; end
-  def _unscoped=(docs); end
-  def append(document); end
-  def as_attributes; end
-  def binding; end
-  def criteria; end
-  def delete_one(document); end
-  def integrate(document); end
-  def method_missing(name, *args, &block); end
-  def object_already_related?(document); end
-  def persistable?; end
-  def reindex; end
-  def remove_all(conditions = T.unsafe(nil), method = T.unsafe(nil)); end
-  def scope(docs); end
+  # def _unscoped; end
+  # def _unscoped=(docs); end
+  # def append(document); end
+  # def as_attributes; end
+  # def binding; end
+  # def criteria; end
+  # def delete_one(document); end
+  # def integrate(document); end
+  # def method_missing(name, *args, &block); end
+  # def object_already_related?(document); end
+  # def persistable?; end
+  # def reindex; end
+  # def remove_all(conditions = T.unsafe(nil), method = T.unsafe(nil)); end
+  # def scope(docs); end
 
   class << self
     def embedded?; end
@@ -505,10 +675,10 @@ class Mongoid::Association::Embedded::EmbedsOne
 
   private
 
-  def determine_inverses(other); end
-  def polymorphic_inverses(other = T.unsafe(nil)); end
-  def relation_complements; end
-  def setup_instance_methods!; end
+  # def determine_inverses(other); end
+  # def polymorphic_inverses(other = T.unsafe(nil)); end
+  # def relation_complements; end
+  # def setup_instance_methods!; end
 end
 
 Mongoid::Association::Embedded::EmbedsOne::ASSOCIATION_OPTIONS = T.let(T.unsafe(nil), T::Array[T.untyped])
@@ -535,8 +705,8 @@ class Mongoid::Association::Embedded::EmbedsOne::Proxy < ::Mongoid::Association:
 
   private
 
-  def binding; end
-  def persistable?; end
+  # def binding; end
+  # def persistable?; end
 
   class << self
     def embedded?; end
@@ -557,13 +727,31 @@ module Mongoid::Association::Macros
 
   def associations; end
 end
-
 module Mongoid::Association::Macros::ClassMethods
-  def belongs_to(name, options = T.unsafe(nil), &block); end
-  def embedded_in(name, options = T.unsafe(nil), &block); end
-  def embeds_many(name, options = T.unsafe(nil), &block); end
-  def embeds_one(name, options = T.unsafe(nil), &block); end
-  def has_and_belongs_to_many(name, options = T.unsafe(nil), &block); end
+  # Adds a referenced association from the child Document
+  # to a Document in another database or collection.
+  sig { params(name: Symbol, options: T::Hash[T.untyped, T.untyped], block: T.proc.bind(Mongoid::Association::Referenced::BelongsTo::Proxy).void).void }
+  def belongs_to(name, options = {}, &block); end
+  # Adds the association back to the parent document.
+  # This macro is necessary to set the references from
+  # the child back to the parent document. If a child
+  # does not define this association calling persistence
+  # methods on the child object will cause a save to fail.
+  sig { params(name: Symbol, options: T::Hash[T.untyped, T.untyped], block: T.proc.bind(Mongoid::Association::Embedded::EmbeddedIn::Proxy).void).void }
+  def embedded_in(name, options = {}, &block); end
+  # Adds the association from a parent document to its children.
+  # The name of the association needs to be a pluralized form
+  # of the child class name.
+  sig { params(name: Symbol, options: T::Hash[T.untyped, T.untyped], block: T.proc.bind(String).void).void }
+  def embeds_many(name, options = {}, &block); end
+  # Adds the association from a parent document to its child.
+  # The name of the association needs to be a singular form
+  # of the child class name.
+  sig { params(name: Symbol, options: T::Hash[T.untyped, T.untyped], block: T.proc.bind(Mongoid::Association::Embedded::EmbedsOne::Proxy).void).void }
+  def embeds_one(name, options = {}, &block); end
+  sig { params(name: Symbol, options: T::Hash[T.untyped, T.untyped], block: T.proc.bind(Mongoid::Association::Proxy).void).void }
+  def has_and_belongs_to_many(name, options = {}, &block); end
+  sig { params(name: Symbol, options: T::Hash[T.untyped, T.untyped], block: T.proc.bind(Mongoid::Association::Proxy).void).void }
   def has_many(name, options = T.unsafe(nil), &block); end
   def has_one(name, options = T.unsafe(nil), &block); end
 
@@ -4003,6 +4191,8 @@ module Mongoid::Indexable::ClassMethods
   def create_indexes; end
   # Adds an index definition for the provided single or compound keys.
   #
+  # [MongoDB documentation](https://docs.mongodb.com/manual/reference/command/createIndexes/#dbcmd.createIndexes)
+  #
   # **Examples**
   #
   # *Create a basic index*
@@ -4013,9 +4203,6 @@ module Mongoid::Indexable::ClassMethods
   #   index({ name: 1 }, { background: true })
   # end
   # ```
-  #
-  # See [MongoDB documentation](https://docs.mongodb.com/manual/reference/command/createIndexes/#dbcmd.createIndexes)
-  # for configuration options.
   sig { params(spec: T::Hash[T.any(String, Symbol), T.any(Integer, String)], options: T.nilable(T::Hash[Symbol, T.untyped])).returns(T::Hash[T.untyped, T.untyped]) }
   def index(spec, options = nil); end
   sig { params(index_hash: T::Hash[T.untyped, T.untyped], index_name: T.nilable(String)).returns(Mongoid::Indexable::Specification) }
@@ -5176,6 +5363,14 @@ module Mongoid::Serializable
   def relation_names(inclusions); end
   sig { params(inclusions: T.any(T::Hash[T.untyped, T.untyped], Symbol, T::Array[Symbol]), options: T::Hash[T.untyped, T.untyped], name: Symbol).returns(T::Hash[T.untyped, T.untyped]) }
   def relation_options(inclusions, options, name); end
+  sig do
+    params(
+      attrs: T::Hash[T.untyped, T.untyped],
+      name: String,
+      names: T::Array[String],
+      options: T::Hash[T.untyped, T.untyped]
+    ).returns(Object)
+  end
   def serialize_attribute(attrs, name, names, options); end
   sig { params(attributes: T::Hash[T.untyped, T.untyped], options: T::Hash[T.untyped, T.untyped]).returns(T.untyped) }
   def serialize_relations(attributes = {}, options = {}); end
@@ -5186,38 +5381,74 @@ module Mongoid::Shardable
 
   mixes_in_class_methods(::Mongoid::Shardable::ClassMethods)
 
+  sig { returns(T::Array[String]) }
   def shard_key_fields; end
+  sig { returns(T::Hash[T.untyped, T.untyped]) }
   def shard_key_selector; end
 end
 
 module Mongoid::Shardable::ClassMethods
+  # Specifies a [shard key](https://docs.mongodb.com/manual/core/sharding-shard-key/index.html)
+  # with the fields specified.
+  #
+  # Requires one or two entries if a Hash,
+  # or one or two symbols if an Array.
+  #
+  # **Examples**
+  #
+  # *Specify the shard key*
+  # ```
+  # class Person
+  #   include Mongoid::Dcoument
+  #   field :first_name, type: String
+  #   field :last_name, type: String
+  #
+  #   shard_key first_name: 1, last_name: 1
+  #   # Shorthand, identical to above line
+  #   shard_key :first_name, :last_name
+  # end
+  # ```
+  sig {params(args: T.any(T::Hash[T.any(String, Symbol), Integer], T::Array[T.any(String, Symbol)])).void}
   def shard_key(*args); end
 end
 
 module Mongoid::Stateful
   def _destroy; end
-  def destroyed=(_arg0); end
-  def destroyed?; end
-  def flagged_for_destroy=(_arg0); end
+  sig {returns T::Boolean}
+  attr_accessor :destroyed
+  sig {params(flagged_for_destroy: T::Boolean).void}
+  attr_writer :flagged_for_destroy
+  sig { returns(T::Boolean) }
   def flagged_for_destroy?; end
+  sig { returns(T::Boolean) }
   def marked_for_destruction?; end
-  def new_record=(_arg0); end
+  sig {params(new_record: T::Boolean).void}
+  attr_writer :new_record
+  sig { returns(T::Boolean) }
   def new_record?; end
+  sig { returns(T::Boolean) }
   def persisted?; end
+  sig { returns(T::Boolean) }
   def pushable?; end
+  sig { returns(T::Boolean) }
   def readonly?; end
+  sig { returns(T::Boolean) }
   def settable?; end
+  sig { returns(T::Boolean) }
   def updateable?; end
 
   private
 
+  sig {void}
   def reset_readonly; end
 end
 
 class Mongoid::StringifiedSymbol
   class << self
+    sig { params(object: Object).returns(Symbol) }
     def demongoize(object); end
     def evolve(object); end
+    sig { params(object: Object).returns(Symbol) }
     def mongoize(object); end
   end
 end
@@ -5228,10 +5459,15 @@ end
 module Mongoid::Tasks::Database
   extend(::Mongoid::Tasks::Database)
 
+  sig { params(models: T.untyped).returns(T::Array[Class]) }  
   def create_indexes(models = T.unsafe(nil)); end
+  sig { params(models: T.untyped).returns(T::Array[Class]) }  
   def remove_indexes(models = T.unsafe(nil)); end
+  sig { params(models: T.untyped).returns(T::Hash[Class, T::Array[T::Hash[T.untyped, T.untyped]]]) }
   def remove_undefined_indexes(models = T.unsafe(nil)); end
+  sig { params(models: T.untyped).returns(T::Array[Class]) }
   def shard_collections(models = T.unsafe(nil)); end
+  sig { params(models: T.untyped).returns(T::Array[T::Hash[T.untyped, T.untyped]]) }
   def undefined_indexes(models = T.unsafe(nil)); end
 
   private
@@ -5330,6 +5566,9 @@ module Mongoid::Timestamps::Created
 
   include(::Mongoid::Timestamps::Timeless)
 
+  # Update the created_at field on the Document to the current time.
+  # This is only called on create.
+  sig {void}
   def set_created_at; end
 end
 
@@ -5468,19 +5707,68 @@ end
 module Mongoid::Validatable::Macros
   extend(::ActiveSupport::Concern)
 
-  # def validates_associated(*args); end
-  # def validates_format_of(*args); end
-  # def validates_length_of(*args); end
-  # def validates_presence_of(*args); end
-  # def validates_uniqueness_of(*args); end
+  # Validates whether or not an association is valid or not.
+  # Will correctly handle `has_one` and `has_many` associations.
+  sig {params(args: Symbol).void}
+  def validates_associated(*args); end
+  # Validates the format of a field.
+  #
+  # [Ruby on Rails documentation](https://api.rubyonrails.org/classes/ActiveModel/Validations/HelperMethods.html#method-i-validates_format_of)
+  #
+  # **Options:**
+  # - `:message => String` Failure message.
+  # - `:with => Regexp | () -> Regexp` Matching regexp.
+  # - `:without => Regexp | () -> Regexp` Non-matching regexp.
+  # - `:multiline => Boolean` Regexp multiline mode.
+  #
+  # **Examples**
+  # ```
+  # class Person
+  #   include Mongoid::Document
+  #   field :title
+  #
+  #   validates_format_of :title, with: /\A[a-z0-9 \-_]*\z/i
+  # end
+  # ```
+  sig {params(args: T.any(Symbol, T::Hash[Symbol, T.untyped])).void}
+  def validates_format_of(*args); end
+  # Validates the length of a field.
+  #
+  # [Ruby on Rails documentation](https://api.rubyonrails.org/classes/ActiveModel/Validations/HelperMethods.html#method-i-validates_length_of)
+  #
+  # Except for `:minimum` and `:maximum` which can be paired,
+  # there can be only one of these constraints active:
+  # - `:minimum` The minimum size of the attribute.
+  # - `:maximum` The maximum size of the attribute.
+  # - `:is` The exact size of the attribute.
+  # - `:within => Range` A range specifying the minimum
+  #   and maximum size of the attribute.
+  # - `:in => Range` Alias for `:within`.
+  sig {params(args: T.any(Symbol, T::Hash[Symbol, T.untyped])).void}
+  def validates_length_of(*args); end
+  # Validates whether or not a field is present - meaning nil or empty.
+  #
+  # [Ruby on Rails documentation](https://api.rubyonrails.org/classes/ActiveModel/Validations/HelperMethods.html#method-i-validates_presence_of)
+  #
+  # **Options:**
+  # - `:message => String` Failure message.
+  sig {params(args: T.any(Symbol, T::Hash[Symbol, T.untyped])).void}
+  def validates_presence_of(*args); end
+  # Validates whether or not a field is unique
+  # against the documents in the database.
+  sig {params(args: Symbol).void}
+  def validates_uniqueness_of(*args); end
 end
 
 class Mongoid::Validatable::PresenceValidator < ::ActiveModel::EachValidator
+  sig { params(document: Mongoid::Document, attribute: Symbol, value: Object).returns(T.untyped) }
   def validate_each(document, attribute, value); end
 
   private
 
+  sig { params(value: Object).returns(T::Boolean) }
   def not_present?(value); end
+  sig { params(doc: Mongoid::Document, attr: Symbol, value: Object).returns(T::Boolean) }
   def relation_or_fk_missing?(doc, attr, value); end
 end
 

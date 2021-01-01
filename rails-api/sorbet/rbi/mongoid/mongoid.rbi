@@ -1,4 +1,4 @@
-# typed: strong
+# typed: true
 # A class which sends values to the database as Strings but returns them to the user as Symbols.
 module Mongoid
   extend Mongoid
@@ -744,6 +744,9 @@ module Mongoid
     sig { params(field: T.nilable(Symbol)).returns(T::Hash[T.untyped, T.untyped]) }
     def touch_atomic_updates(field = nil); end
     class Modifiers < Hash
+      K = Symbol
+      V = Object
+      Elem = Object
       sig { params(modifications: T::Hash[T.untyped, T.untyped]).returns(T.untyped) }
       def add_to_set(modifications); end
       sig { params(modifications: T::Hash[T.untyped, T.untyped]).returns(T.untyped) }
@@ -1482,6 +1485,7 @@ module Mongoid
     def process_localized_attributes(klass, attrs); end
   end
   class Criteria
+    Elem = Document
     include Enumerable
     include Mongoid::Contextual
     include Mongoid::Criteria::Queryable
@@ -1993,9 +1997,9 @@ module Mongoid
         attr_reader :block
       end
       class Smash < Hash
-        K = T.untyped
-        V = T.untyped
-        Elem = [T.untyped, T.untyped]
+        K = String
+        V = Object
+        Elem = Object
 
         sig { returns(Smash) }
         def __deep_copy__; end
@@ -2013,6 +2017,9 @@ module Mongoid
         attr_reader :serializers
       end
       class Options < Mongoid::Criteria::Queryable::Smash
+        K = String
+        V = Object
+        Elem = Object
         sig { returns(T::Hash[T.untyped, T.untyped]) }
         def fields; end
         sig { returns(Integer) }
@@ -2092,6 +2099,7 @@ module Mongoid
         attr_accessor :options
       end
       class Pipeline < Array
+        Elem = Object
         sig { returns(Pipeline) }
         def __deep_copy__; end
         sig { params(entry: T::Hash[T.untyped, T.untyped]).returns(Pipeline) }
@@ -3347,30 +3355,7 @@ module Mongoid
     end
   end
   module Stateful
-    sig { returns(T::Boolean) }
-    def new_record?; end
-    sig { returns(T::Boolean) }
-    def persisted?; end
-    sig { returns(T::Boolean) }
-    def flagged_for_destroy?; end
-    sig { returns(T::Boolean) }
-    def destroyed?; end
-    sig { returns(T::Boolean) }
-    def pushable?; end
-    sig { returns(T::Boolean) }
-    def readonly?; end
-    sig { returns(T::Boolean) }
-    def settable?; end
-    sig { returns(T::Boolean) }
-    def updateable?; end
-    sig { returns(T.untyped) }
-    def reset_readonly; end
-    sig { params(destroyed: T.untyped).returns(T.untyped) }
-    attr_writer :destroyed
-    sig { params(flagged_for_destroy: T.untyped).returns(T.untyped) }
-    attr_writer :flagged_for_destroy
-    sig { params(new_record: T.untyped).returns(T.untyped) }
-    attr_writer :new_record
+
   end
   module Threaded
     extend Mongoid::Threaded
@@ -3550,13 +3535,9 @@ end, T.untyped)
   end
   module Shardable
     extend ActiveSupport::Concern
-    sig { returns(T::Array[String]) }
-    def shard_key_fields; end
-    sig { returns(T::Hash[T.untyped, T.untyped]) }
-    def shard_key_selector; end
+    
+    
     module ClassMethods
-      sig { params(args: T.untyped).returns(T.untyped) }
-      def shard_key(*args); end
     end
   end
   module Touchable
@@ -5016,20 +4997,6 @@ end, T.untyped)
     :restrict_with_exception,
     :restrict_with_error
 ], T.untyped)
-    sig { returns(T::Boolean) }
-    def embedded?; end
-    sig { returns(T::Boolean) }
-    def embedded_many?; end
-    sig { returns(T::Boolean) }
-    def embedded_one?; end
-    sig { returns(Symbol) }
-    def association_name; end
-    sig { returns(T::Boolean) }
-    def referenced_many?; end
-    sig { returns(T::Boolean) }
-    def referenced_one?; end
-    sig { returns(T::Hash[T.untyped, T.untyped]) }
-    def reload_relations; end
     sig { params(name: T.any(String, Symbol)).returns(Association) }
     def reflect_on_association(name); end
     sig { params(macros: Symbol).returns(T::Array[Association]) }
@@ -5211,20 +5178,15 @@ end, T.untyped)
       sig { returns(T::Hash[T.untyped, T.untyped]) }
       def associations; end
       module ClassMethods
-        sig { params(name: Symbol, options: T::Hash[T.untyped, T.untyped], block: T.untyped).returns(T.untyped) }
-        def embedded_in(name, options = {}, &block); end
-        sig { params(name: Symbol, options: T::Hash[T.untyped, T.untyped], block: T.untyped).returns(T.untyped) }
-        def embeds_many(name, options = {}, &block); end
-        sig { params(name: Symbol, options: T::Hash[T.untyped, T.untyped], block: T.untyped).returns(T.untyped) }
-        def embeds_one(name, options = {}, &block); end
-        sig { params(name: Symbol, options: T::Hash[T.untyped, T.untyped], block: T.untyped).returns(T.untyped) }
-        def belongs_to(name, options = {}, &block); end
-        sig { params(name: Symbol, options: T::Hash[T.untyped, T.untyped], block: T.untyped).returns(T.untyped) }
-        def has_many(name, options = {}, &block); end
-        sig { params(name: Symbol, options: T::Hash[T.untyped, T.untyped], block: T.untyped).returns(T.untyped) }
-        def has_and_belongs_to_many(name, options = {}, &block); end
-        sig { params(name: Symbol, options: T::Hash[T.untyped, T.untyped], block: T.untyped).returns(T.untyped) }
-        def has_one(name, options = {}, &block); end
+        
+        
+        
+        
+        # sig { params(name: Symbol, options: T::Hash[T.untyped, T.untyped], block: T.untyped).returns(T.untyped) }
+        # def has_many(name, options = {}, &block); end
+        
+        # sig { params(name: Symbol, options: T::Hash[T.untyped, T.untyped], block: T.untyped).returns(T.untyped) }
+        # def has_one(name, options = {}, &block); end
         sig do
           params(
             macro_name: T.untyped,
@@ -5681,42 +5643,13 @@ end, T.untyped)
       end
       module Batchable
         include Mongoid::Positional
-        sig { params(docs: T::Array[Document]).returns(T::Array[T::Hash[T.untyped, T.untyped]]) }
-        def batch_insert(docs); end
-        sig { params(docs: T::Array[Document]).returns(T::Array[T.untyped]) }
-        def batch_clear(docs); end
-        sig { params(docs: T::Array[Document], method: Symbol).returns(T.untyped) }
-        def batch_remove(docs, method = :delete); end
-        sig { params(docs: T::Array[Document]).returns(T::Array[T::Hash[T.untyped, T.untyped]]) }
-        def batch_replace(docs); end
-        sig { params(sets: T::Array[T::Hash[T.untyped, T.untyped]]).returns(T.untyped) }
-        def add_atomic_sets(sets); end
-        sig { params(docs: T::Array[Document]).returns(T::Array[T::Hash[T.untyped, T.untyped]]) }
-        def execute_batch_set(docs); end
-        sig { params(docs: T::Array[Document]).returns(T::Array[T::Hash[T.untyped, T.untyped]]) }
-        def execute_batch_push(docs); end
-        sig { returns(T::Boolean) }
-        def insertable?; end
-        sig { returns(T::Boolean) }
-        def inserts_valid; end
-        sig { params(value: T::Boolean).returns(T::Boolean) }
-        def inserts_valid=(value); end
-        sig { params(docs: T::Array[T.any(T::Hash[T.untyped, T.untyped], Document)]).returns(T::Array[Document]) }
-        def normalize_docs(docs); end
-        sig { returns(String) }
-        def path; end
-        sig { params(value: String).returns(String) }
-        def path=(value); end
-        sig { returns(T::Hash[T.untyped, T.untyped]) }
-        def selector; end
-        sig { params(docs: T::Array[Document]).returns(T::Array[T::Hash[T.untyped, T.untyped]]) }
-        def pre_process_batch_insert(docs); end
-        sig { params(docs: T::Array[Document], method: Symbol).returns(T::Array[T::Hash[T.untyped, T.untyped]]) }
-        def pre_process_batch_remove(docs, method); end
-        sig { params(docs: T::Array[Document]).returns(T::Enumerable[T.untyped]) }
-        def post_process_batch_insert(docs); end
-        sig { params(docs: T::Array[Document], method: Symbol).returns(T::Array[Document]) }
-        def post_process_batch_remove(docs, method); end
+        
+        
+        
+        
+        
+        
+        
         sig { params(selector: T::Hash[T.untyped, T.untyped], operations: T::Hash[T.untyped, T.untyped], processed: T::Hash[T.untyped, T.untyped]).returns(T::Hash[T.untyped, T.untyped]) }
         def positionally(selector, operations, processed = {}); end
         sig { params(keys: T.untyped, operations: T.untyped, processed: T.untyped).returns(T.untyped) }
@@ -5932,8 +5865,7 @@ end, T.untyped)
     :cyclic,
     :store_as
 ].freeze, T.untyped)
-          sig { params(base: Document, target: Document, association: Association).void }
-          def initialize(base, target, association); end
+          
           sig { params(replacement: Document).returns(T.nilable(Document)) }
           def substitute(replacement); end
           sig { returns(Binding) }
@@ -6040,32 +5972,7 @@ end, T.untyped)
   :extend
 ].freeze, T.untyped)
         PRIMARY_KEY_DEFAULT = T.let('_id'.freeze, T.untyped)
-        sig { returns(T.self_type) }
-        def setup!; end
-        sig { returns(T::Boolean) }
-        def embedded?; end
-        sig { returns(T.nilable(T.any())) }
-        def primary_key; end
-        sig { returns(T::Boolean) }
-        def stores_foreign_key?; end
-        sig { returns(T::Boolean) }
-        def validation_default; end
-        sig { returns(String) }
-        def key; end
-        sig { returns(Association::Embedded::EmbeddedIn::Proxy) }
-        def relation; end
-        sig { returns(T::Boolean) }
-        def polymorphic?; end
-        sig { params(attributes: T::Hash[T.untyped, T.untyped], options: T::Hash[T.untyped, T.untyped]).returns(Association::Nested::One) }
-        def nested_builder(attributes, options); end
-        sig { returns(T.untyped) }
-        def setup_instance_methods!; end
-        sig { returns(T.untyped) }
-        def relation_complements; end
-        sig { params(other: T.untyped).returns(T.untyped) }
-        def polymorphic_inverses(other = nil); end
-        sig { params(other: T.untyped).returns(T.untyped) }
-        def determine_inverses(other); end
+
         sig do
           params(
             base: Object,
@@ -6336,51 +6243,8 @@ end, T.untyped)
   :extend
 ].freeze, T.untyped)
         PRIMARY_KEY_DEFAULT = T.let('_id'.freeze, T.untyped)
-        sig { returns(T.self_type) }
-        def setup!; end
-        sig { returns(String) }
-        def store_as; end
-        sig { returns(String) }
-        def key; end
-        sig { returns(T::Boolean) }
-        def embedded?; end
-        sig { returns(T::Boolean) }
-        def validation_default; end
-        sig { returns(T::Boolean) }
-        def stores_foreign_key?; end
-        sig { returns(T.nilable(T.any())) }
-        def primary_key; end
-        sig { returns(Association::Embedded::EmbedsMany::Proxy) }
-        def relation; end
-        sig { returns(T::Boolean) }
-        def polymorphic?; end
-        sig { returns(T.nilable(String)) }
-        def type; end
-        sig { params(attributes: T::Hash[T.untyped, T.untyped], options: T::Hash[T.untyped, T.untyped]).returns(Association::Nested::Many) }
-        def nested_builder(attributes, options); end
-        sig { params(document: Document).returns(Mongoid::Atomic::Paths::Embedded::Many) }
-        def path(document); end
-        sig { params(base: Document, target: Document).returns(T.untyped) }
-        def criteria(base, target); end
-        sig { params(criteria: T.untyped).returns(T.untyped) }
-        def apply_ordering(criteria); end
-        sig { returns(T.untyped) }
-        def setup_instance_methods!; end
-        sig { returns(T.untyped) }
-        def relation_complements; end
-        sig { params(other: T.untyped).returns(T.untyped) }
-        def polymorphic_inverses(other = nil); end
-        sig { params(other: T.untyped).returns(T.untyped) }
-        def determine_inverses(other); end
-        sig do
-          params(
-            base: Object,
-            object: Object,
-            type: T.nilable(String),
-            selected_fields: T.nilable(T::Hash[T.untyped, T.untyped])
-          ).returns(T::Array[Document])
-        end
-        def build(base, object, type = nil, selected_fields = nil); end
+
+        
         sig { returns(Object) }
         def _assigning; end
         sig { returns(T::Boolean) }
@@ -6522,223 +6386,17 @@ end, T.untyped)
         def convert_polymorphic(object); end
         class Proxy < Mongoid::Association::Many
           include Mongoid::Association::Embedded::Batchable
-          sig { params(args: T.any(Document, T::Array[Document])).returns(T.untyped) }
-          def <<(*args); end
-          sig { returns(T::Array[T::Hash[T.untyped, T.untyped]]) }
-          def as_document; end
-          sig { params(docs: T::Array[Document]).returns(T::Array[Document]) }
-          def concat(docs); end
-          sig { params(attributes: T::Hash[T.untyped, T.untyped], type: T.nilable(Class)).returns(Document) }
-          def build(attributes = {}, type = nil); end
-          sig { returns(T.self_type) }
-          def clear; end
-          sig { returns(Integer) }
-          def count; end
-          sig { params(document: Document).returns(T.nilable(Document)) }
-          def delete(document); end
-          sig { params(conditions: T::Hash[T.untyped, T.untyped]).returns(Integer) }
-          def delete_all(conditions = {}); end
-          sig { returns(T.any(Many, T::Enumerator[T.untyped])) }
-          def delete_if; end
-          sig { params(conditions: T::Hash[T.untyped, T.untyped]).returns(Integer) }
-          def destroy_all(conditions = {}); end
-          sig { returns(T::Boolean) }
-          def exists?; end
-          sig { params(args: Object).returns(T.any(T::Array[Document], Document)) }
-          def find(*args); end
-          sig { params(base: Document, target: T::Array[Document], association: Association).void }
-          def initialize(base, target, association); end
-          sig { returns(T::Array[Document]) }
-          def in_memory; end
-          sig { params(count: T.nilable(Integer)).returns(T.any(Document, T::Array[Document])) }
-          def pop(count = nil); end
-          sig { params(count: T.nilable(Integer)).returns(T.any(Document, T::Array[Document])) }
-          def shift(count = nil); end
-          sig { params(docs: T::Array[Document]).returns(Many) }
-          def substitute(docs); end
-          sig { returns(Criteria) }
-          def unscoped; end
-          sig { params(document: T.untyped).returns(T::Boolean) }
-          def object_already_related?(document); end
-          sig { params(document: Document).returns(T.untyped) }
-          def append(document); end
-          sig { returns(Binding) }
-          def binding; end
-          sig { returns(Criteria) }
-          def criteria; end
-          sig { params(document: Document).returns(T.untyped) }
-          def delete_one(document); end
-          sig { params(document: Document).returns(T.untyped) }
-          def integrate(document); end
-          sig { params(name: T.any(Symbol, String), args: T::Array[T.untyped], block: T.untyped).returns(T.any(Criteria, Object)) }
-          def method_missing(name, *args, &block); end
-          sig { returns(T::Boolean) }
-          def persistable?; end
-          sig { returns(T.untyped) }
-          def reindex; end
-          sig { params(docs: T::Array[Document]).returns(T::Array[Document]) }
-          def scope(docs); end
-          sig { params(conditions: T::Hash[T.untyped, T.untyped], method: T::Boolean).returns(Integer) }
-          def remove_all(conditions = {}, method = :delete); end
-          sig { returns(T::Array[Document]) }
-          def _unscoped; end
-          sig { params(docs: T::Array[Document]).returns(T::Array[Document]) }
-          def _unscoped=(docs); end
-          sig { returns(T.untyped) }
-          def as_attributes; end
-          sig { returns(T::Boolean) }
-          def self.embedded?; end
-          sig { returns(T.nilable(T.any())) }
-          def self.foreign_key_suffix; end
-          sig { params(docs: T::Array[Document]).returns(T::Array[T::Hash[T.untyped, T.untyped]]) }
-          def batch_insert(docs); end
-          sig { params(docs: T::Array[Document]).returns(T::Array[T.untyped]) }
-          def batch_clear(docs); end
-          sig { params(docs: T::Array[Document], method: Symbol).returns(T.untyped) }
-          def batch_remove(docs, method = :delete); end
-          sig { params(docs: T::Array[Document]).returns(T::Array[T::Hash[T.untyped, T.untyped]]) }
-          def batch_replace(docs); end
-          sig { params(sets: T::Array[T::Hash[T.untyped, T.untyped]]).returns(T.untyped) }
-          def add_atomic_sets(sets); end
-          sig { params(docs: T::Array[Document]).returns(T::Array[T::Hash[T.untyped, T.untyped]]) }
-          def execute_batch_set(docs); end
-          sig { params(docs: T::Array[Document]).returns(T::Array[T::Hash[T.untyped, T.untyped]]) }
-          def execute_batch_push(docs); end
-          sig { returns(T::Boolean) }
-          def insertable?; end
-          sig { returns(T::Boolean) }
-          def inserts_valid; end
-          sig { params(value: T::Boolean).returns(T::Boolean) }
-          def inserts_valid=(value); end
-          sig { params(docs: T::Array[T.any(T::Hash[T.untyped, T.untyped], Document)]).returns(T::Array[Document]) }
-          def normalize_docs(docs); end
-          sig { returns(String) }
-          def path; end
-          sig { params(value: String).returns(String) }
-          def path=(value); end
-          sig { returns(T::Hash[T.untyped, T.untyped]) }
-          def selector; end
-          sig { params(docs: T::Array[Document]).returns(T::Array[T::Hash[T.untyped, T.untyped]]) }
-          def pre_process_batch_insert(docs); end
-          sig { params(docs: T::Array[Document], method: Symbol).returns(T::Array[T::Hash[T.untyped, T.untyped]]) }
-          def pre_process_batch_remove(docs, method); end
-          sig { params(docs: T::Array[Document]).returns(T::Enumerable[T.untyped]) }
-          def post_process_batch_insert(docs); end
-          sig { params(docs: T::Array[Document], method: Symbol).returns(T::Array[Document]) }
-          def post_process_batch_remove(docs, method); end
-          sig { params(selector: T::Hash[T.untyped, T.untyped], operations: T::Hash[T.untyped, T.untyped], processed: T::Hash[T.untyped, T.untyped]).returns(T::Hash[T.untyped, T.untyped]) }
-          def positionally(selector, operations, processed = {}); end
-          sig { params(keys: T.untyped, operations: T.untyped, processed: T.untyped).returns(T.untyped) }
-          def process_operations(keys, operations, processed); end
-          sig { params(keys: T.untyped, update: T.untyped, updates: T.untyped).returns(T.untyped) }
-          def process_updates(keys, update, updates = {}); end
-          sig { params(keys: T.untyped, position: T.untyped).returns(T.untyped) }
-          def replace_index(keys, position); end
         end
         class Binding
-          include Mongoid::Association::Bindable
-          sig { params(doc: Document).returns(T.untyped) }
-          def bind_one(doc); end
-          sig { params(doc: Document).returns(T.untyped) }
-          def unbind_one(doc); end
-          sig { params(base: Document, target: T.any(Document, T::Array[Document]), association: Association).void }
-          def initialize(base, target, association); end
-          sig { returns(Object) }
-          def binding; end
-          sig { params(doc: Document).returns(T.untyped) }
-          def check_inverse!(doc); end
-          sig { params(keyed: Document, id: Object).returns(T.untyped) }
-          def bind_foreign_key(keyed, id); end
-          sig { params(typed: Document, name: String).returns(T.untyped) }
-          def bind_polymorphic_type(typed, name); end
-          sig { params(typed: Document, name: String).returns(T.untyped) }
-          def bind_polymorphic_inverse_type(typed, name); end
-          sig { params(doc: Document, inverse: Document).returns(T.untyped) }
-          def bind_inverse(doc, inverse); end
-          sig { params(doc: Document).returns(T.untyped) }
-          def bind_from_relational_parent(doc); end
-          sig { params(_base: T.untyped).returns(T.untyped) }
-          def record_id(_base); end
-          sig { returns(T::Boolean) }
-          def set_base_association; end
-          sig { params(doc: Document).returns(T.untyped) }
-          def unbind_from_relational_parent(doc); end
-          sig { returns(Object) }
-          def _assigning; end
-          sig { returns(T::Boolean) }
-          def _assigning?; end
-          sig { returns(Object) }
-          def _binding; end
-          sig { returns(T::Boolean) }
-          def _binding?; end
-          sig { returns(Object) }
-          def _building; end
-          sig { returns(T::Boolean) }
-          def _building?; end
-          sig { returns(T::Boolean) }
-          def _creating?; end
-          sig { returns(Object) }
-          def _loading; end
-          sig { returns(T::Boolean) }
-          def _loading?; end
         end
         module Buildable
           include Mongoid::Threaded::Lifecycle
-          sig do
-            params(
-              base: Object,
-              object: Object,
-              type: T.nilable(String),
-              selected_fields: T.nilable(T::Hash[T.untyped, T.untyped])
-            ).returns(T::Array[Document])
-          end
-          def build(base, object, type = nil, selected_fields = nil); end
-          sig { returns(Object) }
-          def _assigning; end
-          sig { returns(T::Boolean) }
-          def _assigning?; end
-          sig { returns(Object) }
-          def _binding; end
-          sig { returns(T::Boolean) }
-          def _binding?; end
-          sig { returns(Object) }
-          def _building; end
-          sig { returns(T::Boolean) }
-          def _building?; end
-          sig { returns(T::Boolean) }
-          def _creating?; end
-          sig { returns(Object) }
-          def _loading; end
-          sig { returns(T::Boolean) }
-          def _loading?; end
         end
       end
     end
     module Referenced
       module Eager
         class Base
-          sig { params(associations: T::Array[Association], docs: T::Array[Document]).void }
-          def initialize(associations, docs); end
-          sig { returns(T::Array[T.untyped]) }
-          def run; end
-          sig { returns(T.untyped) }
-          def preload; end
-          sig { params(block: T.untyped).returns(T.untyped) }
-          def each_loaded_document(&block); end
-          sig { params(cls: T.untyped, keys: T.untyped).returns(T.untyped) }
-          def each_loaded_document_of_class(cls, keys); end
-          sig { params(id: BSON::ObjectId, element: T.any(Document, T::Array[T.untyped])).returns(T.untyped) }
-          def set_on_parent(id, element); end
-          sig { returns(T::Hash[T.untyped, T.untyped]) }
-          def grouped_docs; end
-          sig { returns(T::Array[T.untyped]) }
-          def keys_from_docs; end
-          sig { returns(Symbol) }
-          def group_by_key; end
-          sig { params(doc: Document, element: T.any(Document, T::Array[T.untyped])).returns(T.untyped) }
-          def set_relation(doc, element); end
-          sig { returns(Association) }
-          def shift_association; end
         end
       end
       class HasOne
@@ -7250,6 +6908,7 @@ end, T.untyped)
         end
         class Proxy < Mongoid::Association::Many
           extend Forwardable
+          Elem = Document
           sig { params(args: T.any(Document, T::Array[Document])).returns(T::Array[Document]) }
           def <<(*args); end
           sig { params(documents: T::Array[Document]).returns(T::Array[Document]) }
@@ -8042,36 +7701,36 @@ end, T.untyped)
           sig { returns(T.untyped) }
           def key; end
         end
-        class Proxy < Mongoid::Association::Referenced::HasMany::Proxy
-          sig { params(args: T.any(Document, T::Array[Document])).returns(T::Array[Document]) }
-          def <<(*args); end
-          sig { params(documents: T::Array[Document]).returns(T::Array[Document]) }
-          def concat(documents); end
-          sig { params(attributes: T::Hash[T.untyped, T.untyped], type: T.nilable(Class)).returns(Document) }
-          def build(attributes = {}, type = nil); end
-          sig { params(document: Document).returns(Document) }
-          def delete(document); end
-          sig { params(replacement: T::Array[Document]).returns(T.untyped) }
-          def nullify(replacement = []); end
-          sig { params(replacement: T::Array[Document]).returns(Many) }
-          def substitute(replacement); end
-          sig { returns(Criteria) }
-          def unscoped; end
-          sig { params(document: Document).returns(T.untyped) }
-          def append(document); end
-          sig { returns(Binding) }
-          def binding; end
-          sig { params(doc: Document).returns(T::Boolean) }
-          def child_persistable?(doc); end
-          sig { params(id_list: T.untyped).returns(Criteria) }
-          def criteria(id_list = nil); end
-          sig { params(doc: Document, key: Symbol).returns(T::Boolean) }
-          def unsynced(doc, key); end
-          sig { params(association: Association, docs: T::Array[Document]).returns(T.untyped) }
-          def self.eager_loader(association, docs); end
-          sig { returns(T::Boolean) }
-          def self.embedded?; end
-        end
+        # class Proxy < Mongoid::Association::Referenced::HasMany::Proxy
+        #   sig { params(args: T.any(Document, T::Array[Document])).returns(T::Array[Document]) }
+        #   def <<(*args); end
+        #   sig { params(documents: T::Array[Document]).returns(T::Array[Document]) }
+        #   def concat(documents); end
+        #   sig { params(attributes: T::Hash[T.untyped, T.untyped], type: T.nilable(Class)).returns(Document) }
+        #   def build(attributes = {}, type = nil); end
+        #   sig { params(document: Document).returns(Document) }
+        #   def delete(document); end
+        #   sig { params(replacement: T::Array[Document]).returns(T.untyped) }
+        #   def nullify(replacement = []); end
+        #   sig { params(replacement: T::Array[Document]).returns(Many) }
+        #   def substitute(replacement); end
+        #   sig { returns(Criteria) }
+        #   def unscoped; end
+        #   sig { params(document: Document).returns(T.untyped) }
+        #   def append(document); end
+        #   sig { returns(Binding) }
+        #   def binding; end
+        #   sig { params(doc: Document).returns(T::Boolean) }
+        #   def child_persistable?(doc); end
+        #   sig { params(id_list: T.untyped).returns(Criteria) }
+        #   def criteria(id_list = nil); end
+        #   sig { params(doc: Document, key: Symbol).returns(T::Boolean) }
+        #   def unsynced(doc, key); end
+        #   sig { params(association: Association, docs: T::Array[Document]).returns(T.untyped) }
+        #   def self.eager_loader(association, docs); end
+        #   sig { returns(T::Boolean) }
+        #   def self.embedded?; end
+        # end
         class Binding
           include Mongoid::Association::Bindable
           sig { params(doc: Document).returns(T.untyped) }
@@ -8423,7 +8082,6 @@ end, T.untyped)
     module ClassMethods
       sig { params(association: Association).returns(T.untyped) }
       def validates_relation(association); end
-      # [Mongoid API](https://docs.mongodb.com/mongoid/master/api/Mongoid/Validatable/ClassMethods.html#validates_with-instance_method)
       sig { params(args: T::Array[Class], opts: T::Hash[T.untyped, T.untyped], block: Proc).returns(T.untyped) }
       def validates_with(*args, **opts, &block); end
       sig { returns(T::Boolean) }
@@ -8441,24 +8099,15 @@ end, T.untyped)
     end
     module Macros
       extend ActiveSupport::Concern
-      sig { params(args: Symbol).returns(T.untyped) }
-      def validates_associated(*args); end
-      sig { params(args: Symbol).returns(T.untyped) }
-      def validates_uniqueness_of(*args); end
-      sig { params(args: Symbol, opts: T::Hash[T.untyped, T.untyped]).returns(T.untyped) }
-      def validates_format_of(*args, **opts); end
-      sig { params(args: Symbol, opts: T::Hash[T.untyped, T.untyped]).returns(T.untyped) }
-      def validates_length_of(*args, **opts); end
-      sig { params(args: Symbol, opts: T::Hash[T.untyped, T.untyped]).returns(T.untyped) }
-      def validates_presence_of(*args, **opts); end
+      # sig { params(args: Symbol, opts: T::Hash[T.untyped, T.untyped]).returns(T.untyped) }
+      # def validates_format_of(*args, **opts); end
+      # sig { params(args: Symbol, opts: T::Hash[T.untyped, T.untyped]).returns(T.untyped) }
+      # def validates_length_of(*args, **opts); end
+      # sig { params(args: Symbol, opts: T::Hash[T.untyped, T.untyped]).returns(T.untyped) }
+      # def validates_presence_of(*args, **opts); end
     end
     class PresenceValidator < ActiveModel::EachValidator
-      sig { params(document: Document, attribute: Symbol, value: Object).returns(T.untyped) }
-      def validate_each(document, attribute, value); end
-      sig { params(doc: Document, attr: Symbol, value: Object).returns(T::Boolean) }
-      def relation_or_fk_missing?(doc, attr, value); end
-      sig { params(value: Object).returns(T::Boolean) }
-      def not_present?(value); end
+      
     end
     module Queryable
       sig { params(document: Document).returns(Object) }
@@ -8515,19 +8164,7 @@ end, T.untyped)
   end
   module Serializable
     extend ActiveSupport::Concern
-    
-    
-    sig do
-      params(
-        attrs: T::Hash[T.untyped, T.untyped],
-        name: String,
-        names: T::Array[String],
-        options: T::Hash[T.untyped, T.untyped]
-      ).returns(Object)
-    end
-    def serialize_attribute(attrs, name, names, options); end
-    
-    
+
   end
   module Interceptable
     extend ActiveSupport::Concern
@@ -8872,30 +8509,6 @@ end, T.untyped)
   module Tasks
     module Database
       extend Mongoid::Tasks::Database
-      sig { params(models: T.untyped).returns(T::Array[Class]) }
-      def create_indexes(models = ::Mongoid.models); end
-      sig { params(models: T.untyped).returns(T::Array[T::Hash[T.untyped, T.untyped]]) }
-      def undefined_indexes(models = ::Mongoid.models); end
-      sig { params(models: T.untyped).returns(T::Hash[Class, [T::Hash[T.untyped, T.untyped]]]) }
-      def remove_undefined_indexes(models = ::Mongoid.models); end
-      sig { params(models: T.untyped).returns(T::Array[Class]) }
-      def remove_indexes(models = ::Mongoid.models); end
-      sig { params(models: T.untyped).returns(T::Array[Class]) }
-      def shard_collections(models = ::Mongoid.models); end
-      sig { returns(T.untyped) }
-      def logger; end
-      sig { params(models: T.untyped).returns(T::Array[Class]) }
-      def self.create_indexes(models = ::Mongoid.models); end
-      sig { params(models: T.untyped).returns(T::Array[T::Hash[T.untyped, T.untyped]]) }
-      def self.undefined_indexes(models = ::Mongoid.models); end
-      sig { params(models: T.untyped).returns(T::Hash[Class, [T::Hash[T.untyped, T.untyped]]]) }
-      def self.remove_undefined_indexes(models = ::Mongoid.models); end
-      sig { params(models: T.untyped).returns(T::Array[Class]) }
-      def self.remove_indexes(models = ::Mongoid.models); end
-      sig { params(models: T.untyped).returns(T::Array[Class]) }
-      def self.shard_collections(models = ::Mongoid.models); end
-      sig { returns(T.untyped) }
-      def self.logger; end
     end
   end
   module Errors
@@ -9281,21 +8894,7 @@ end, T.untyped)
   :collection
 ].freeze, T.untyped)
     VALID_OPTIONS = T.let(( ::Mongo::Client::VALID_OPTIONS + EXTRA_OPTIONS ).freeze, T.untyped)
-    
-    
-    
-    
-    
-    
-    
 
-
-
-    
-    
-    
-    sig { returns(T::Hash[T.untyped, T.untyped]) }
-    attr_reader :options
   end
   module Generators
     class Base < Rails::Generators::NamedBase
